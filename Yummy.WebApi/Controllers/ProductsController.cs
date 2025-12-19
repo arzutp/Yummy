@@ -1,9 +1,11 @@
-﻿using FluentValidation;
+﻿using AutoMapper;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Yummy.WebApi.Context;
+using Yummy.WebApi.Dtos.ProductDtos;
 using Yummy.WebApi.Entities;
 
 namespace Yummy.WebApi.Controllers;
@@ -13,11 +15,13 @@ public class ProductsController : ControllerBase
 {
     private readonly IValidator<Product> _validator;
     private readonly ApiContext _context;
+    private readonly IMapper _mapper;
 
-    public ProductsController(IValidator<Product> productValidator, ApiContext context)
+    public ProductsController(IValidator<Product> productValidator, ApiContext context, IMapper mapper)
     {
         _validator = productValidator;
         _context = context;
+        _mapper = mapper;
     }
 
     [HttpGet]
@@ -25,12 +29,13 @@ public class ProductsController : ControllerBase
     {
         var products = await _context.Products.ToListAsync();
 
-        return Ok(products);
+        return Ok(_mapper.Map<List<ResultProductDto>>(products));
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(Product product)
+    public async Task<IActionResult> Create(CreateProductDto createProductDto)
     {
+        var product = _mapper.Map<Product>(createProductDto);
         var validationResult = await _validator.ValidateAsync(product);
         if (!validationResult.IsValid)
         {
@@ -68,12 +73,13 @@ public class ProductsController : ControllerBase
             return NotFound("Ürün bulunamadı.");
         }
 
-        return Ok(value);
+        return Ok(_mapper.Map<GetByIdProductDto>(value));
     }
 
     [HttpPut]
-    public async Task<IActionResult> Update(Product product)
+    public async Task<IActionResult> Update(UpdateProductDto productDto)
     {
+        var product = _mapper.Map<Product>(productDto);
         var validationResult = _validator.Validate(product);
         if (!validationResult.IsValid)
         {
@@ -84,5 +90,12 @@ public class ProductsController : ControllerBase
         await _context.SaveChangesAsync();
 
         return Ok("Başarıyla güncellendi.");
+    }
+
+    [HttpGet("ProductWithCategory")]
+    public async Task<IActionResult> GetProductWithCategory()
+    {
+        var products = await _context.Products.Include(x => x.Category).ToListAsync();
+        return Ok(_mapper.Map<List<ProductsWithCategoryDto>>(products));
     }
 }
