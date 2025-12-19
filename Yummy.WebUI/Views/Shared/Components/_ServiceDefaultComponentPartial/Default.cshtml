@@ -1,4 +1,6 @@
-﻿<section id="why-us" class="why-us section light-background">
+﻿@model List<ResultServiceDto>
+
+<section id="why-us" class="why-us section light-background">
 
     <div class="container">
 
@@ -23,30 +25,16 @@
             <div class="col-lg-8 d-flex align-items-stretch">
                 <div class="row gy-4" data-aos="fade-up" data-aos-delay="200">
 
-                    <div class="col-xl-4">
-                        <div class="icon-box d-flex flex-column justify-content-center align-items-center">
-                            <i class="bi bi-clipboard-data"></i>
-                            <h4>Günlük ve Taze Üretim</h4>
-                            <p>Yummy’de kullanılan tüm ürünler günlük olarak hazırlanır. Tazelikten ödün verilmez, her tabakta aynı kalite korunur. Ne yediğinizi bilirsiniz, ne bekleyeceğinizi de.</p>
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-xl-4">
+                            <div class="icon-box d-flex flex-column justify-content-center align-items-center">
+                                <i class="@item.IconUrl"></i>
+                                <h4>@item.Title</h4>
+                                <p>@item.Description</p>
+                            </div>
                         </div>
-                    </div><!-- End Icon Box -->
-
-                    <div class="col-xl-4" data-aos="fade-up" data-aos-delay="300">
-                        <div class="icon-box d-flex flex-column justify-content-center align-items-center">
-                            <i class="bi bi-gem"></i>
-                            <h4>Özenle Hazırlanmış Lezzetler</h4>
-                            <p>Her tarif, dengeli tatlar ve doğru malzemelerle hazırlanır. Rastgele değil, bilinçli seçimlerle oluşturulmuş menüler sunarız.</p>
-                        </div>
-                    </div><!-- End Icon Box -->
-
-                    <div class="col-xl-4" data-aos="fade-up" data-aos-delay="400">
-                        <div class="icon-box d-flex flex-column justify-content-center align-items-center">
-                            <i class="bi bi-inboxes"></i>
-                            <h4>Keyifli ve Tutarlı Deneyim</h4>
-                            <p>Sadece doyurmak değil, iyi hissettirmek isteriz. Samimi ortam, hızlı servis ve her ziyaretinizde aynı lezzet standardı.</p>
-                        </div>
-                    </div><!-- End Icon Box -->
-
+                    }
                 </div>
             </div>
 

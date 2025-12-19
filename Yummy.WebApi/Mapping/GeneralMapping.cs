@@ -3,6 +3,7 @@ using Yummy.WebApi.Dtos.ContactDtos;
 using Yummy.WebApi.Dtos.FeatureDtos;
 using Yummy.WebApi.Dtos.MessageDtos;
 using Yummy.WebApi.Dtos.ProductDtos;
+using Yummy.WebApi.Dtos.ServiceDtos;
 using Yummy.WebApi.Entities;
 
 namespace Yummy.WebApi.Mapping;
@@ -31,5 +32,10 @@ public class GeneralMapping : Profile
         CreateMap<Product, UpdateProductDto>().ReverseMap();
         CreateMap<Product, ProductsWithCategoryDto>()
             .ForMember(x => x.CategoryName, y => y.MapFrom(z => z.Category.Name));
+
+        CreateMap<Service, CreateServiceDto>().ReverseMap();
+        CreateMap<Service, GetByIdServiceDto>().ReverseMap();
+        CreateMap<Service, ResultServiceDto>().ReverseMap();
+        CreateMap<Service, UpdateServiceDto>().ReverseMap();
     }
 }
