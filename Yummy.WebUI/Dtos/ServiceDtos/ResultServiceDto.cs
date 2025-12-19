@@ -1,4 +1,4 @@
-﻿namespace Yummy.WebUI.Dtos.ServiceDtos;
+﻿namespace Yummy.WebUI.Dtos;
 
 public class ResultServiceDto
 {

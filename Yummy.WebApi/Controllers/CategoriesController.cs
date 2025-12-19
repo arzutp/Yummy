@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Yummy.WebApi.Context;
+using Yummy.WebApi.Dtos.CategoryDtos;
 using Yummy.WebApi.Entities;
 
 namespace Yummy.WebApi.Controllers;
@@ -10,15 +12,18 @@ namespace Yummy.WebApi.Controllers;
 public class CategoriesController : ControllerBase
 {
     private readonly ApiContext _context;
+    private readonly IMapper _mapper;
 
-    public CategoriesController(ApiContext context)
+    public CategoriesController(ApiContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(Category category)
+    public async Task<IActionResult> Create(CreateCategoryDto createCategoryDto)
     {
+        var category = _mapper.Map<Category>(createCategoryDto);
         await _context.Categories.AddAsync(category);
         await _context.SaveChangesAsync();
 
@@ -29,7 +34,7 @@ public class CategoriesController : ControllerBase
     public async Task<IActionResult> GetAll()
     {
         var values = await _context.Categories.ToListAsync();
-        return Ok(values);
+        return Ok(_mapper.Map<List<ResultCategoryDto>>(values));
     }
 
     [HttpGet("id")]
@@ -41,7 +46,7 @@ public class CategoriesController : ControllerBase
         {
             return NotFound();
         }
-        return Ok(value);
+        return Ok(_mapper.Map<GetByIdCategoryDto>(value));
     }
 
     [HttpDelete("id")]
@@ -60,14 +65,14 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<IActionResult> Update(Category category)
+    public async Task<IActionResult> Update(UpdateCategoryDto updateCategoryDto)
     {
-        var value = await _context.Categories.FirstOrDefaultAsync(c => c.Id == category.Id);
+        var value = await _context.Categories.FirstOrDefaultAsync(c => c.Id == updateCategoryDto.Id);
         if (value == null)
         {
             return NotFound();
         }
-
+        var category = _mapper.Map<Category>(updateCategoryDto);
         value.Name = category.Name;
         await _context.SaveChangesAsync();
 
