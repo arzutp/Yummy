@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using Yummy.WebApi.Dtos.CategoryDtos;
+using Yummy.WebApi.Dtos.ChefDtos;
 using Yummy.WebApi.Dtos.ContactDtos;
 using Yummy.WebApi.Dtos.FeatureDtos;
 using Yummy.WebApi.Dtos.MessageDtos;
 using Yummy.WebApi.Dtos.ProductDtos;
 using Yummy.WebApi.Dtos.ServiceDtos;
+using Yummy.WebApi.Dtos.SpecialEventDtos;
+using Yummy.WebApi.Dtos.TestimonialDtos;
 using Yummy.WebApi.Entities;
 
 namespace Yummy.WebApi.Mapping;
@@ -17,6 +20,11 @@ public class GeneralMapping : Profile
         CreateMap<Category, GetByIdCategoryDto>().ReverseMap();
         CreateMap<Category, ResultCategoryDto>().ReverseMap();
         CreateMap<Category, UpdateCategoryDto>().ReverseMap();
+
+        CreateMap<Chef, CreateChefDto>().ReverseMap();
+        CreateMap<Chef, GetByIdChefDto>().ReverseMap();
+        CreateMap<Chef, ResultChefDto>().ReverseMap();
+        CreateMap<Chef, UpdateChefDto>().ReverseMap();
 
         CreateMap<Message, CreateMessageDto>().ReverseMap();
         CreateMap<Message, GetByIdMessageDto>().ReverseMap();
@@ -43,5 +51,15 @@ public class GeneralMapping : Profile
         CreateMap<Service, GetByIdServiceDto>().ReverseMap();
         CreateMap<Service, ResultServiceDto>().ReverseMap();
         CreateMap<Service, UpdateServiceDto>().ReverseMap();
+
+        CreateMap<SpecialEvent, CreateSpecialEventDto>().ReverseMap();
+        CreateMap<SpecialEvent, GetByIdSpecialEventDto>().ReverseMap();
+        CreateMap<SpecialEvent, ResultSpecialEventDto>().ReverseMap();
+        CreateMap<SpecialEvent, UpdateSpecialEventDto>().ReverseMap();
+
+        CreateMap<Testimonial, CreateTestimonialDto>().ReverseMap();
+        CreateMap<Testimonial, GetByIdTestimonialDto>().ReverseMap();
+        CreateMap<Testimonial, ResultTestimonialDto>().ReverseMap();
+        CreateMap<Testimonial, UpdateTestimonialDto>().ReverseMap();
     }
 }
