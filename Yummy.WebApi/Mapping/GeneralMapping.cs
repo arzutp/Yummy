@@ -4,6 +4,7 @@ using Yummy.WebApi.Dtos.ChefDtos;
 using Yummy.WebApi.Dtos.ContactDtos;
 using Yummy.WebApi.Dtos.FeatureDtos;
 using Yummy.WebApi.Dtos.MessageDtos;
+using Yummy.WebApi.Dtos.NotificationDtos;
 using Yummy.WebApi.Dtos.ProductDtos;
 using Yummy.WebApi.Dtos.ServiceDtos;
 using Yummy.WebApi.Dtos.SpecialEventDtos;
@@ -29,6 +30,11 @@ public class GeneralMapping : Profile
         CreateMap<Message, CreateMessageDto>().ReverseMap();
         CreateMap<Message, GetByIdMessageDto>().ReverseMap();
         CreateMap<Message, ResultMessageDto>().ReverseMap();
+
+        CreateMap<Notification, CreateNotificationDto>().ReverseMap();
+        CreateMap<Notification, GetByIdNotificationDto>().ReverseMap();
+        CreateMap<Notification, ResultNotificationDto>().ReverseMap();
+        CreateMap<Notification, UpdateNotificationDto>().ReverseMap();
 
         CreateMap<Feature, CreateFeatureDto>().ReverseMap();
         CreateMap<Feature, GetByIdFeatureDto>().ReverseMap();

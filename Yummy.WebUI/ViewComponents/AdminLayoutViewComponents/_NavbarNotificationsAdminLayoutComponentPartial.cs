@@ -1,0 +1,29 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Yummy.WebUI.Dtos;
+
+namespace Yummy.WebUI.ViewComponents.AdminLayoutViewComponents;
+
+public class _NavbarNotificationsAdminLayoutComponentPartial : ViewComponent
+{
+    private readonly IHttpClientFactory _httpClientFactory;
+
+    public _NavbarNotificationsAdminLayoutComponentPartial(IHttpClientFactory httpClientFactory)
+    {
+        _httpClientFactory = httpClientFactory;
+    }
+
+    public async Task<IViewComponentResult> InvokeAsync()
+    {
+        var client = _httpClientFactory.CreateClient();
+        var response = await client.GetAsync("https://localhost:7114/api/Notifications");
+        if (!response.IsSuccessStatusCode)
+        {
+            return View();
+        }
+        var jsonData = await response.Content.ReadAsStringAsync();
+        var values = JsonConvert.DeserializeObject<List<ResultNotificationDto>>(jsonData);
+
+        return View(values);
+    }
+}

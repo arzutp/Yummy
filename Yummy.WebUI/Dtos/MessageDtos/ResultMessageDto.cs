@@ -1,7 +1,8 @@
-﻿namespace Yummy.WebApi.Dtos.MessageDtos;
+﻿namespace Yummy.WebUI.Dtos;
 
-public class CreateMessageDto
+public class ResultMessageDto
 {
+    public int Id { get; set; }
     public string Name { get; set; }
     public string Surname { get; set; }
     public string Email { get; set; }

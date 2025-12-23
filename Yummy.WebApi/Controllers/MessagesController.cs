@@ -65,4 +65,11 @@ public class MessagesController : ControllerBase
 
         return Ok(_mapper.Map<GetByIdMessageDto>(value));
     }
+
+    [HttpGet("GetUnreadMesssages")]
+    public async Task<IActionResult> GetUnreadMessageList()
+    {
+        var values = await _context.Messages.Where(x => x.IsRead == false).ToListAsync();
+        return Ok(_mapper.Map<List<ResultMessageDto>>(values));
+    }
 }
