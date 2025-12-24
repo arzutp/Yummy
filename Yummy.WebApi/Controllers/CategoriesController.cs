@@ -31,10 +31,28 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll(int page = 1, int pageSize = 10)
     {
-        var values = await _context.Categories.ToListAsync();
-        return Ok(_mapper.Map<List<ResultCategoryDto>>(values));
+        var query = _context.Categories.AsNoTracking();
+
+        var totalCount = await query.CountAsync();
+
+        var categories = await query
+            .OrderBy(x => x.Id)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        var result = new PagedCategoryResult
+        {
+            Items = _mapper.Map<List<ResultCategoryDto>>(categories),
+            Page = page,
+            PageSize = pageSize,
+            TotalCount = totalCount,
+            TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize)
+        };
+
+        return Ok(result);
     }
 
     [HttpGet("{id}")]

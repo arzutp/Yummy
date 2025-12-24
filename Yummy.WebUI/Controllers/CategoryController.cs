@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Newtonsoft.Json;
 using System.Text;
-using System.Threading.Tasks;
 using Yummy.WebUI.Dtos;
 
 namespace Yummy.WebUI.Controllers;
@@ -15,18 +13,34 @@ public class CategoryController : Controller
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<IActionResult> CategoryList()
+    public async Task<IActionResult> CategoryList(int page = 1)
     {
         var client = _httpClientFactory.CreateClient();
-        var response = await client.GetAsync("https://localhost:7114/api/Categories");
+
+        var response = await client.GetAsync($"https://localhost:7114/api/Categories?page={page}&pageSize=10");
+
         if (!response.IsSuccessStatusCode)
         {
             return View();
         }
+
         var jsonData = await response.Content.ReadAsStringAsync();
-        var values = JsonConvert.DeserializeObject<List<ResultCategoryDto>>(jsonData);
-        return View(values);
+        var result = JsonConvert.DeserializeObject<PagedCategoryResult>(jsonData);
+
+        if (result == null)
+        {
+            return View(new PagedCategoryResult
+            {
+                Items = new List<ResultCategoryDto>(),
+                Page = 1,
+                PageSize = 10,
+                TotalPages = 0
+            });
+        }
+
+        return View(result);
     }
+
 
     [HttpGet]
     public IActionResult Create()
@@ -79,7 +93,7 @@ public class CategoryController : Controller
         var jsonData = JsonConvert.SerializeObject(updateCategoryDto);
         StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-        var responeMessage = client.PutAsync("https://localhost:7114/api/Categories", stringContent);
+        var responeMessage = await client.PutAsync("https://localhost:7114/api/Categories", stringContent);
 
         return RedirectToAction("CategoryList");
     }
