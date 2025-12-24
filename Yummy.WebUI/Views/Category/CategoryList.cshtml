@@ -1,0 +1,47 @@
+﻿@model List<ResultCategoryDto>
+
+@{
+    ViewData["Title"] = "CategoryList";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    int count = 1;
+}
+
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12 col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Kategoriler</h4>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Kategori Adı</th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <th scope="row">@count</th>
+                                        <td>@item.Name</td>
+                                        <td><a href="/Category/Delete/@item.Id" class="btn btn-danger">Sil</a></td>
+                                        <td><a href="/Category/Update/@item.Id" class="btn btn-info">Güncelle</a></td>
+                                    </tr>
+                                    count++;
+                                }                                
+                            </tbody>
+                            <td><a href="/Category/Create" class="btn btn-success">Ekle</a></td>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

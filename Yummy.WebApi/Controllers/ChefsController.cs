@@ -36,7 +36,7 @@ public class ChefsController : ControllerBase
         return Ok(chef);
     }
 
-    [HttpGet("id")]
+    [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
         var value = await _context.Chefs.FirstOrDefaultAsync(c => c.Id == id);
@@ -47,7 +47,7 @@ public class ChefsController : ControllerBase
         return Ok(_mapper.Map<GetByIdChefDto>(value));
     }
 
-    [HttpDelete("id")]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
         var value = await _context.Chefs.FirstOrDefaultAsync(c => c.Id == id);

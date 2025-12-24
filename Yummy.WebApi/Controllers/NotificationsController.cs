@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Yummy.WebApi.Context;
-using Yummy.WebApi.Dtos.FeatureDtos;
 using Yummy.WebApi.Dtos.NotificationDtos;
 using Yummy.WebApi.Entities;
 
@@ -30,7 +28,7 @@ public class NotificationsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create(CreateNotificationDto dto)
     {
-        var notification = _mapper.Map<Entities.Notification>(dto);
+        var notification = _mapper.Map<Notification>(dto);
         await _context.Notifications.AddAsync(notification);
         await _context.SaveChangesAsync();
         return Ok("Başarıyla eklendi");

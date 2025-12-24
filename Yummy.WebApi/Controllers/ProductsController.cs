@@ -2,8 +2,6 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using Yummy.WebApi.Context;
 using Yummy.WebApi.Dtos.ProductDtos;
 using Yummy.WebApi.Entities;
@@ -47,7 +45,7 @@ public class ProductsController : ControllerBase
         return Ok("Ürün başarılı bir şekilde eklendi.");
     }
 
-    [HttpDelete("id")]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
         var value = await _context.Products.FirstOrDefaultAsync(x => x.Id == id);
@@ -63,7 +61,7 @@ public class ProductsController : ControllerBase
         return Ok("Ürün başarıyla silindi.");
     }
 
-    [HttpGet("id")]
+    [HttpGet("{id}")]
     public async Task<IActionResult> Get(int id)
     {
         var value = await _context.Products.FirstOrDefaultAsync(x => x.Id == id);

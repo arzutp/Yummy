@@ -37,7 +37,7 @@ public class CategoriesController : ControllerBase
         return Ok(_mapper.Map<List<ResultCategoryDto>>(values));
     }
 
-    [HttpGet("id")]
+    [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
         var value = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id);
@@ -49,7 +49,7 @@ public class CategoriesController : ControllerBase
         return Ok(_mapper.Map<GetByIdCategoryDto>(value));
     }
 
-    [HttpDelete("id")]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
         var value = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id);
