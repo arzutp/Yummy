@@ -1,6 +1,8 @@
-﻿namespace Yummy.WebUI.Dtos;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 
-public class ResultProductDto
+namespace Yummy.WebUI.Dtos;
+
+public class UpdateProductDto
 {
     public int Id { get; set; }
     public string Name { get; set; }
@@ -8,5 +10,5 @@ public class ResultProductDto
     public decimal Price { get; set; }
     public string ImageUrl { get; set; }
     public int CategoryId { get; set; }
-    public string CategoryName { get; set; }
+    public List<SelectListItem> Categories { get; set; }
 }

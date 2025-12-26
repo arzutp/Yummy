@@ -31,7 +31,17 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll(int page = 1, int pageSize = 10)
+    public async Task<IActionResult> GetAll()
+    {
+        var categories = await _context.Categories.ToListAsync();
+
+        var result = _mapper.Map<List<ResultCategoryDto>>(categories);
+
+        return Ok(result);
+    }
+
+    [HttpGet("GetAllWithPagination")]
+    public async Task<IActionResult> GetAllWithPagination(int page = 1, int pageSize = 10)
     {
         var query = _context.Categories.AsNoTracking();
 

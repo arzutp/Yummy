@@ -17,7 +17,7 @@ public class CategoryController : Controller
     {
         var client = _httpClientFactory.CreateClient();
 
-        var response = await client.GetAsync($"https://localhost:7114/api/Categories?page={page}&pageSize=10");
+        var response = await client.GetAsync($"https://localhost:7114/api/Categories/GetAllWithPagination?page={page}&pageSize=10");
 
         if (!response.IsSuccessStatusCode)
         {
@@ -56,7 +56,7 @@ public class CategoryController : Controller
         var jsonData = JsonConvert.SerializeObject(createCategoryDto);
         StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-        var responseMessage = await client.PostAsync("https://localhost:7114/api/Categories", stringContent);
+        var responseMessage = await client.PostAsync("https://localhost:7114/api/Categories/", stringContent);
         
         if (!responseMessage.IsSuccessStatusCode)
         {

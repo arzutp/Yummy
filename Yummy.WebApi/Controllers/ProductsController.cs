@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using System.Drawing.Printing;
 using Yummy.WebApi.Context;
 using Yummy.WebApi.Dtos.ProductDtos;
 using Yummy.WebApi.Entities;
 
 namespace Yummy.WebApi.Controllers;
+
 [Route("api/[controller]")]
 [ApiController]
 public class ProductsController : ControllerBase
@@ -23,11 +26,13 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll(int page = 1, int pageSize = 10)
     {
-        var products = await _context.Products.ToListAsync();
+        var query = await _context.Products.ToListAsync();
 
-        return Ok(_mapper.Map<List<ResultProductDto>>(products));
+        var result = _mapper.Map<List<ResultProductDto>>(query);
+
+        return Ok(result);
     }
 
     [HttpPost]
@@ -91,9 +96,25 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet("ProductWithCategory")]
-    public async Task<IActionResult> GetProductWithCategory()
+    public async Task<IActionResult> GetProductWithCategory(int page = 1, int pageSize = 10)
     {
-        var products = await _context.Products.Include(x => x.Category).ToListAsync();
-        return Ok(_mapper.Map<List<ProductsWithCategoryDto>>(products));
+        var query = _context.Products.AsNoTracking();
+        var totalCount = await query.CountAsync();
+
+        var products = await query.Include(x => x.Category).OrderBy(x => x.Id).
+                                Skip((page - 1) * pageSize).
+                                Take(pageSize)
+                                .ToListAsync();
+
+        var result = new PagedProductWithCategoryResultDto
+        {
+            Items = _mapper.Map<List<ProductsWithCategoryDto>>(products),
+            Page = page,
+            PageSize = pageSize,
+            TotalCount = totalCount,
+            TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize)
+        };
+
+        return Ok(result);
     }
 }
