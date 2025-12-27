@@ -1,4 +1,5 @@
-﻿@model GetByIdFeatureDto
+﻿@model GetByIdWhyChooseYummyDto
+
 @{
     ViewData["Title"] = "Update";
     Layout = "~/Views/AdminLayout/Index.cshtml";
@@ -10,25 +11,18 @@
             <div class="col-12 col-md-12 col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Öne Çıkan Güncelleme Sayfası</h4>
+                        <h4>Alan Güncelleme Sayfası</h4>
                     </div>
                     <div class="card-body">
                         <form method="post">
-                            <input type="hidden" asp-for="Id" />
                             <label>Başlık</label>
                             <input type="text" asp-for="Title" class="form-control" />
-                            <br />
-                            <label>Alt Başlık</label>
-                            <input type="text" asp-for="SubTitle" class="form-control" />
                             <br />
                             <label>Açıklama</label>
                             <textarea class="form-control" rows="5" asp-for="Description"></textarea>
                             <br />
-                            <label>Video Link (Embed Link)</label>
-                            <input type="text" asp-for="VideoUrl" class="form-control" />
-                            <br />
-                            <label>Resim link</label>
-                            <input type="text" asp-for="ImageUrl" class="form-control" />
+                            <label>İcon Url</label>
+                            <input type="text" asp-for="IconUrl" class="form-control" />
                             <br />
                             <button class="btn btn-primary">Güncelle</button>
                         </form>

@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
-using System.Threading.Tasks;
 using Yummy.WebUI.Dtos;
 
 namespace Yummy.WebUI.Controllers;
+
 public class FeatureController : Controller
 {
     private readonly IHttpClientFactory _httpClientFactory;

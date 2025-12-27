@@ -27,6 +27,13 @@ public class SpecialEventsController : ControllerBase
         return Ok(_mapper.Map<List<ResultSpecialEventDto>>(values));
     }
 
+    [HttpGet("GetActiveSpecialEvents")]
+    public async Task<IActionResult> GetActiveSpecialEvents()
+    {
+        var values = await _context.SpecialEvents.Where(x => x.Status == true).ToListAsync();
+        return Ok(_mapper.Map<List<ResultSpecialEventDto>>(values));
+    }
+
     [HttpPost]
     public async Task<IActionResult> CreateSpecialEvent(CreateSpecialEventDto createSpecialEventDto)
     {

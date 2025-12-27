@@ -1,0 +1,56 @@
+﻿@model GetByIdTestimonialDto
+
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12 col-lg-10">
+                <div class="card">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <h4 class="mb-0">Müşteri Yorumu Detay</h4>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row g-4">
+                            <div class="col-12 col-md-8">
+                                <div class="mb-3">
+                                    <small class="text-muted d-block">Adı Soyadı</small>
+                                    <div class="h6 mb-0">@Model.NameSurname</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <small class="text-muted d-block">Başlık</small>
+                                    <div class="h6 mb-0">@Model.Title</div>
+                                </div>
+
+                                <div class="mb-0">
+                                    <small class="text-muted d-block">Yorum</small>
+                                    <p class="mb-0" style="line-height:1.6;">
+                                        @Model.Comment
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <small class="text-muted d-block mb-2">Müşteri Resmi</small>
+
+                                <div class="border rounded shadow-sm overflow-hidden" style="width: 100%; max-width: 280px;">
+                                    <img src="@Model.ImageUrl"
+                                         alt="Müşteri resmi"
+                                         style="width:100%; height:220px; object-fit:cover; display:block;" />
+                                </div>                              
+                            </div>
+                        </div>
+                        <hr class="my-4" />
+                        <a asp-action="TestimonialList" class="btn btn-light">
+                            Geri Dön
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

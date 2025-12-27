@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Yummy.WebApi.Dtos.AboutDtos;
 using Yummy.WebApi.Dtos.CategoryDtos;
 using Yummy.WebApi.Dtos.ChefDtos;
 using Yummy.WebApi.Dtos.ContactDtos;
@@ -17,6 +18,11 @@ public class GeneralMapping : Profile
 {
     public GeneralMapping()
     {
+        CreateMap<About, CreateAboutDto>().ReverseMap();
+        CreateMap<About, GetByIdAboutDto>().ReverseMap();
+        CreateMap<About, ResultAboutDto>().ReverseMap();
+        CreateMap<About, UpdateAboutDto>().ReverseMap();
+
         CreateMap<Category, CreateCategoryDto>().ReverseMap();
         CreateMap<Category, GetByIdCategoryDto>().ReverseMap();
         CreateMap<Category, ResultCategoryDto>().ReverseMap();

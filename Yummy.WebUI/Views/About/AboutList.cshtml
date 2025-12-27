@@ -1,0 +1,52 @@
+﻿@model List<ResultAboutDto>
+@{
+    ViewData["Title"] = "AboutList";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    int count = 1;
+}
+
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12 col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Hakkımda bölümü</h4>
+                    </div>
+                    <div class="card-body">
+                        @if (Model.Count == 0 && Model.Count < 1)
+                        {
+                            <a href="/About/Create" class="btn btn-success float-right">Yeni Hakkımda Alanı Gir</a>
+                            <br />
+                        }
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Başlık</th>
+                                    <th scope="col">Açıklama</th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <th scope="row">@count</th>
+                                        <td>@item.Title</td>
+                                        <td>@item.Description</td>
+                                        <td><a href="/About/Delete/@item.Id" class="btn btn-danger">Sil</a></td>
+                                        <td><a href="/About/Update/@item.Id" class="btn btn-info">Güncelle</a></td>
+                                    </tr>
+                                    count++;
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

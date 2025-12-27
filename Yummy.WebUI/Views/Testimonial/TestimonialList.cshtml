@@ -1,0 +1,70 @@
+﻿@model PagedTestimonialResult
+
+@{
+    ViewData["Title"] = "TestimonialList";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    int count = (Model.Page - 1) * Model.PageSize + 1;
+}
+
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12 col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Kategoriler</h4>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Adı Soyadı</th>
+                                    <th scope="col">Başlık</th>
+                                    <th scope="col">Yorum</th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Items)
+                                {
+                                    <tr>
+                                        <th scope="row">@count</th>
+                                        <td>@item.NameSurname</td>
+                                        <td>@item.Title</td>
+                                        <td>@item.Comment</td>
+                                        <td><a href="/Testimonial/Delete/@item.Id" class="btn btn-danger">Sil</a></td>
+                                        <td><a href="/Testimonial/Detail/@item.Id" class="btn btn-info">Detay</a></td>
+                                    </tr>
+                                    count++;
+                                }
+                            </tbody>
+
+                        </table>
+                        <ul class="pagination">
+                            <li class="page-item @(Model.Page <= 1 ? "disabled" : "")">
+                                <a class="page-link" href="?page=@(Model.Page - 1)" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+
+                            @for (int i = 1; i <= Model.TotalPages; i++)
+                            {
+                                <li class="page-item @(i == Model.Page ? "active" : "")">
+                                    <a class="page-link" href="?page=@i">@i</a>
+                                </li>
+                            }
+
+                            <li class="page-item @(Model.Page >= Model.TotalPages ? "disabled" : "")">
+                                <a class="page-link" href="?page=@(Model.Page + 1)" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

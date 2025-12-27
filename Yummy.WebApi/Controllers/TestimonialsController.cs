@@ -27,6 +27,30 @@ public class TestimonialsController : ControllerBase
         return Ok(_mapper.Map<List<ResultTestimonialDto>>(values));
     }
 
+    [HttpGet("GetAllWithPagination")]
+    public async Task<IActionResult> GetAllWithPagination(int page = 1, int pageSize = 15)
+    {
+        var query = _context.Testimonials.AsNoTracking();
+
+        var totalCount = query.Count();
+
+        var testimonials = await query.OrderBy(x => x.Id)
+                                      .Skip((page - 1) * pageSize)
+                                      .Take(pageSize)
+                                      .ToListAsync();
+
+        var result = new PagedTestimonialResult
+        {
+            Items = _mapper.Map<List<ResultTestimonialDto>>(testimonials),
+            TotalCount = totalCount,
+            Page = page,
+            PageSize = pageSize,
+            TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize)
+        };
+
+        return Ok(result);
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create(CreateTestimonialDto createTestimonial)
     {

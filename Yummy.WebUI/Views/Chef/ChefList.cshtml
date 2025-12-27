@@ -1,0 +1,51 @@
+﻿@model List<ResultChefDto>
+@{
+    ViewData["Title"] = "ChefList";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    int count = 1;
+}
+
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12 col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Şefler</h4>
+                    </div>
+                    <div class="card-body">
+                        <a href="/Chef/Create" class="btn btn-success float-right">Ekle</a>
+                        <br />
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Adı Soyadı</th>
+                                    <th scope="col">Açıklama</th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <th scope="row">@count</th>
+                                        <td>@item.NameSurname</td>
+                                        <td>@item.Description</td>                                        
+                                        <td><a href="/Chef/Delete/@item.Id" class="btn btn-danger">Sil</a></td>
+                                        <td><a href="/Chef/Update/@item.Id" class="btn btn-info">Güncelle</a></td>
+                                        <td><a href="/Chef/Detail/@item.Id" class="btn btn-success">Detay</a></td>
+                                    </tr>
+                                    count++;
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

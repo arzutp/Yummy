@@ -1,0 +1,65 @@
+﻿@model GetByIdSpecialEventDto
+
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12 col-lg-10">
+                <div class="card">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <h4 class="mb-0">Etkinlik Detay</h4>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row g-4">
+                            <div class="col-12 col-md-8">
+                                <div class="mb-3">
+                                    <small class="text-muted d-block">Etkinlik Adı</small>
+                                    <div class="h6 mb-0">@Model.Name</div>
+                                </div>
+                                <div class="mb-0">
+                                    <small class="text-muted d-block">Açıklama</small>
+                                    <p class="mb-0" style="line-height:1.6;">
+                                        @Model.Description
+                                    </p>
+                                </div>
+                                <div class="mb-3">
+                                    <small class="text-muted d-block">Fiyat</small>
+                                    <div class="h6 mb-0">@Model.Price</div>
+                                </div>
+                                <div class="mb-3">
+                                    <small class="text-muted d-block">Durumu</small>
+                                    @if (Model.Status)
+                                    {
+                                        <span class="badge badge-success">Aktif</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-secondary">Pasif</span>
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <small class="text-muted d-block mb-2">Etkinlik Resmi</small>
+
+                                <div class="border rounded shadow-sm overflow-hidden" style="width: 100%; max-width: 280px;">
+                                    <img src="@Model.ImageUrl"
+                                         alt="Etkinlik resmi"
+                                         style="width:100%; height:220px; object-fit:cover; display:block;" />
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="my-4" />
+                        <a asp-action="SpecialEventList" class="btn btn-light">
+                            Geri Dön
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
