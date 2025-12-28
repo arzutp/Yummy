@@ -1,10 +1,9 @@
 ﻿using Yummy.WebApi.Enums;
 
-namespace Yummy.WebApi.Entities;
+namespace Yummy.WebApi.Dtos.ReservationDtos;
 
-public class Reservation
+public class CreateReservationDto
 {
-    public int Id { get; set; }
     public string Name { get; set; }
     public string Surname { get; set; }
     public string Email { get; set; }

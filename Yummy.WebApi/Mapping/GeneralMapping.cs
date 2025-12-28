@@ -7,6 +7,7 @@ using Yummy.WebApi.Dtos.FeatureDtos;
 using Yummy.WebApi.Dtos.MessageDtos;
 using Yummy.WebApi.Dtos.NotificationDtos;
 using Yummy.WebApi.Dtos.ProductDtos;
+using Yummy.WebApi.Dtos.ReservationDtos;
 using Yummy.WebApi.Dtos.ServiceDtos;
 using Yummy.WebApi.Dtos.SpecialEventDtos;
 using Yummy.WebApi.Dtos.TestimonialDtos;
@@ -58,6 +59,11 @@ public class GeneralMapping : Profile
         CreateMap<Product, UpdateProductDto>().ReverseMap();
         CreateMap<Product, ProductsWithCategoryDto>()
             .ForMember(x => x.CategoryName, y => y.MapFrom(z => z.Category.Name));
+
+        CreateMap<Reservation, CreateReservationDto>().ReverseMap();
+        CreateMap<Reservation, GetByIdReservationDto>().ReverseMap();
+        CreateMap<Reservation, ResultReservationDto>().ReverseMap();
+        CreateMap<Reservation, UpdateReservationDto>().ReverseMap();
 
         CreateMap<Service, CreateServiceDto>().ReverseMap();
         CreateMap<Service, GetByIdServiceDto>().ReverseMap();

@@ -1,8 +1,8 @@
-﻿using Yummy.WebApi.Enums;
+﻿using Yummy.WebUI.Enums;
 
-namespace Yummy.WebApi.Entities;
+namespace Yummy.WebUI.Dtos;
 
-public class Reservation
+public class GetByIdReservationDto
 {
     public int Id { get; set; }
     public string Name { get; set; }

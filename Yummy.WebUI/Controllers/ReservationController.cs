@@ -4,20 +4,21 @@ using System.Text;
 using Yummy.WebUI.Dtos;
 
 namespace Yummy.WebUI.Controllers;
-public class CategoryController : Controller
+
+public class ReservationController : Controller
 {
     private readonly IHttpClientFactory _httpClientFactory;
 
-    public CategoryController(IHttpClientFactory httpClientFactory)
+    public ReservationController(IHttpClientFactory httpClientFactory)
     {
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<IActionResult> CategoryList(int page = 1)
+    public async Task<IActionResult> ReservationList(int page = 1)
     {
         var client = _httpClientFactory.CreateClient();
 
-        var response = await client.GetAsync($"https://localhost:7114/api/Categories/GetAllWithPagination?page={page}&pageSize=10");
+        var response = await client.GetAsync($"https://localhost:7114/api/Reservations/?page={page}&pageSize=10");
 
         if (!response.IsSuccessStatusCode)
         {
@@ -25,13 +26,13 @@ public class CategoryController : Controller
         }
 
         var jsonData = await response.Content.ReadAsStringAsync();
-        var result = JsonConvert.DeserializeObject<PagedCategoryResult>(jsonData);
+        var result = JsonConvert.DeserializeObject<PagedReservastionResult>(jsonData);
 
         if (result == null)
         {
-            return View(new PagedCategoryResult
+            return View(new PagedReservastionResult
             {
-                Items = new List<ResultCategoryDto>(),
+                Items = new List<ResultReservationDto>(),
                 Page = 1,
                 PageSize = 10,
                 TotalPages = 0
@@ -48,52 +49,52 @@ public class CategoryController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateCategoryDto createCategoryDto)
+    public async Task<IActionResult> Create(CreateReservationDto createReservationDto)
     {
         var client = _httpClientFactory.CreateClient();
 
-        var jsonData = JsonConvert.SerializeObject(createCategoryDto);
+        var jsonData = JsonConvert.SerializeObject(createReservationDto);
         StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-        var responseMessage = await client.PostAsync("https://localhost:7114/api/Categories/", stringContent);
-        
+        var responseMessage = await client.PostAsync("https://localhost:7114/api/Reservations/", stringContent);
+
         if (!responseMessage.IsSuccessStatusCode)
         {
             return View();
         }
-        
-        return RedirectToAction("CategoryList");
+
+        return RedirectToAction("ReservationList");
     }
 
     public async Task<IActionResult> Delete(int id)
     {
         var client = _httpClientFactory.CreateClient();
-        await client.DeleteAsync("https://localhost:7114/api/Categories/" + id);
-        return RedirectToAction("CategoryList");
+        await client.DeleteAsync("https://localhost:7114/api/Reservations/" + id);
+        return RedirectToAction("ReservationList");
     }
 
     [HttpGet]
-    public async Task<IActionResult> Update(int id) 
+    public async Task<IActionResult> Update(int id)
     {
         var client = _httpClientFactory.CreateClient();
 
-        var responseMessage = await client.GetAsync("https://localhost:7114/api/Categories/" + id);
+        var responseMessage = await client.GetAsync("https://localhost:7114/api/Reservations/" + id);
         var jsonData = await responseMessage.Content.ReadAsStringAsync();
-        var value = JsonConvert.DeserializeObject<GetCategoryByIdDto>(jsonData);
+        var value = JsonConvert.DeserializeObject<GetByIdReservationDto>(jsonData);
 
         return View(value);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Update(UpdateCategoryDto updateCategoryDto)
+    public async Task<IActionResult> Update(UpdateReservationDto updateReservationDto)
     {
         var client = _httpClientFactory.CreateClient();
 
-        var jsonData = JsonConvert.SerializeObject(updateCategoryDto);
+        var jsonData = JsonConvert.SerializeObject(updateReservationDto);
         StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-        var responeMessage = await client.PutAsync("https://localhost:7114/api/Categories", stringContent);
+        var responeMessage = await client.PutAsync("https://localhost:7114/api/Reservations", stringContent);
 
-        return RedirectToAction("CategoryList");
+        return RedirectToAction("ReservationList");
     }
 }

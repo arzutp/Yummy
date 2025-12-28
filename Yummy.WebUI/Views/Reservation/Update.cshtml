@@ -1,0 +1,51 @@
+﻿@model GetByIdReservationDto
+@using Microsoft.AspNetCore.Mvc.Rendering
+@using Yummy.WebUI.Enums
+
+@{
+    ViewData["Title"] = "Update";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12 col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Rezervasyon Güncelleme Sayfası</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            <input type="hidden" asp-for="Id" />
+                            <label>Müşteri Adı</label>
+                            <input type="text" asp-for="Name" class="form-control" />
+                            <label>Müşteri Soyadı</label>
+                            <input type="text" asp-for="Surname" class="form-control" />
+                            <label>Müşteri Telefon Numarası</label>
+                            <input type="text" asp-for="PhoneNumber" class="form-control" />
+                            <label>Müşteri Email</label>
+                            <input type="text" asp-for="Email" class="form-control" />
+                            <label>Müşteri Adı</label>
+                            <input type="datetime-local" asp-for="ReservationDate" class="form-control" />
+                            <br />
+                            <label>Kişi Sayısı</label>
+                            <input type="number" asp-for="CountOfPeople" class="form-control" />
+                            <br />
+                            <label>Müşteri Notu</label>
+                            <textarea asp-for="Message" rows="5" class="form-control"></textarea>
+                            <br />
+                            <label>Rezervasyon Durumu</label>
+                            <select asp-for="Status"
+                                    asp-items="Html.GetEnumSelectList<ReservationStatus>()"
+                                    class="form-control">
+                            </select>
+                            <br />
+                            <button class="btn btn-primary">Düzenle</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
