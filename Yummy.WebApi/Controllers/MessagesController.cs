@@ -28,10 +28,34 @@ public class MessagesController : ControllerBase
         return Ok(_mapper.Map<List<ResultMessageDto>>(values));
     }
 
+    [HttpGet("GetAllWithPagination")]
+    public async Task<IActionResult> GetAllWithPagination(int page = 1, int pageSize = 10)
+    {
+        var query = _context.Messages.AsNoTracking();
+
+        var totalCount = await query.CountAsync();
+
+        var values = await query.OrderBy(x => x.Id)
+                                .Skip((page - 1) * pageSize)
+                                .Take(pageSize).ToListAsync();
+
+        var result = new PagedMessageResult
+        {
+            Items = _mapper.Map<List<ResultMessageDto>>(values),
+            Page = page,
+            PageSize = pageSize,
+            TotalCount = totalCount,
+            TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize)
+        };  
+
+        return Ok(result);
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create(CreateMessageDto createMessageDto)
     {
         var value = _mapper.Map<Message>(createMessageDto);
+        value.SendDate = DateTime.UtcNow;
         await _context.Messages.AddAsync(value);
         await _context.SaveChangesAsync();
 

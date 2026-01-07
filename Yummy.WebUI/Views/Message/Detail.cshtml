@@ -1,0 +1,54 @@
+﻿@model GetByIdMessageDto
+
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12 col-lg-10">
+                <div class="card">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <h4 class="mb-0">Mesaj Detayı</h4>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row g-4">
+                            <div class="col-12 col-md-8">
+                                <div class="mb-3">
+                                    <small class="text-muted d-block">Gönderen Adı Soyadı</small>
+                                    <div class="h6 mb-0">@Model.Name @Model.Surname</div>
+                                </div>
+                                <div class="mb-3">
+                                    <small class="text-muted d-block">Gönderen Email</small>
+                                    <div class="h6 mb-0">@Model.Email</div>
+                                </div>
+                                <div class="mb-3">
+                                    <small class="text-muted d-block">Tarih</small>
+                                    <div class="h6 mb-0">@Model.SendDate.ToString("dd MMMM yyyy")</div>
+                                </div>
+                                <div class="mb-3">
+                                    <small class="text-muted d-block">Konu Başlığı</small>
+                                    <div class="h6 mb-0">@Model.Subject</div>
+                                </div>
+                                <div class="mb-0">
+                                    <small class="text-muted d-block">Açıklama</small>
+                                    <p class="mb-0" style="line-height:1.6;">
+                                        @Model.Detail
+                                    </p>
+                                </div>
+
+                            </div>
+                        </div>
+                        <hr class="my-4" />
+                        <a asp-action="MessageList" class="btn btn-light">
+                            Geri Dön
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

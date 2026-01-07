@@ -1,19 +1,23 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Yummy.WebApi.Context;
 using Yummy.WebApi.Dtos.ContactDtos;
 using Yummy.WebApi.Entities;
 
 namespace Yummy.WebApi.Controllers;
+
 [Route("api/[controller]")]
 [ApiController]
 public class ContactsController : ControllerBase
 {
     private readonly ApiContext _context;
+    private readonly IMapper _mapper;
 
-    public ContactsController(ApiContext context)
+    public ContactsController(ApiContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
     [HttpGet]
@@ -21,7 +25,7 @@ public class ContactsController : ControllerBase
     {
         var values = await _context.Contacts.ToListAsync();
 
-        return Ok(values);
+        return Ok(_mapper.Map<List<ResultContactDto>>(values));
     }
 
     [HttpPost]
@@ -60,7 +64,7 @@ public class ContactsController : ControllerBase
         {
             return NotFound();
         }
-        return Ok(value);
+        return Ok(_mapper.Map<GetByIdContactDto>(value));
     }
 
     [HttpPut]

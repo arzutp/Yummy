@@ -6,6 +6,7 @@ using Yummy.WebApi.Dtos.ReservationDtos;
 using Yummy.WebApi.Entities;
 
 namespace Yummy.WebApi.Controllers;
+
 [Route("api/[controller]")]
 [ApiController]
 public class ReservationsController : ControllerBase

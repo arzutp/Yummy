@@ -4,6 +4,7 @@ using Yummy.WebApi.Dtos.CategoryDtos;
 using Yummy.WebApi.Dtos.ChefDtos;
 using Yummy.WebApi.Dtos.ContactDtos;
 using Yummy.WebApi.Dtos.FeatureDtos;
+using Yummy.WebApi.Dtos.ImageDtos;
 using Yummy.WebApi.Dtos.MessageDtos;
 using Yummy.WebApi.Dtos.NotificationDtos;
 using Yummy.WebApi.Dtos.ProductDtos;
@@ -52,7 +53,12 @@ public class GeneralMapping : Profile
         CreateMap<Contact, GetByIdContactDto>().ReverseMap();
         CreateMap<Contact, ResultContactDto>().ReverseMap();
         CreateMap<Contact, UpdateContactDto>().ReverseMap();
-        
+
+        CreateMap<Image, CreateImageDto>().ReverseMap();
+        CreateMap<Image, GetByIdImageDto>().ReverseMap();
+        CreateMap<Image, ResultImageDto>().ReverseMap();
+        CreateMap<Image, UpdateImageDto>().ReverseMap();
+
         CreateMap<Product, CreateProductDto>().ReverseMap();
         CreateMap<Product, GetByIdProductDto>().ReverseMap();
         CreateMap<Product, ResultProductDto>().ReverseMap();
