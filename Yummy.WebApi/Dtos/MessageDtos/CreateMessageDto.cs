@@ -8,4 +8,5 @@ public class CreateMessageDto
     public string Subject { get; set; }
     public string Detail { get; set; }
     public bool IsRead { get; set; }
+    public string? Status { get; set; }
 }

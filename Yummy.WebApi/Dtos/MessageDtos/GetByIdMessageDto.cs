@@ -10,4 +10,5 @@ public class GetByIdMessageDto
     public string Detail { get; set; }
     public DateTime SendDate { get; set; }
     public bool IsRead { get; set; }
+    public string? Status { get; set; }
 }

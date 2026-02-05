@@ -1,0 +1,49 @@
+﻿@model GetByIdMessageDto
+
+@{
+    ViewData["Title"] = "AnswerMessageWithOpenAi";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12 col-lg-10">
+                <div class="card">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <h4 class="mb-0">Mesaj Detayı</h4>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row g-4">
+                            <div class="col-12 col-md-8">
+                                <form method="post">
+                                    <input type="hidden" asp-for="Id" />
+                                    <input type="hidden" asp-for="Detail" />
+                                    <div class="mb-0">
+                                        <small class="text-muted d-block">Müşteri Mesajı</small>
+                                        <p asp-for="Detail" class="mb-0" style="line-height:1.6;">
+                                            @Model.Detail
+                                        </p>
+                                    </div>
+                                    <button class="btn btn-primary mt-3" id="generateResponseBtn">Cevap Oluştur</button>
+                                    <div class="mb-0">
+                                        <small class="text-muted d-block">Ai Otomatik Mesaj</small>
+                                        <textarea class="form-control" id="answerDetail" rows="10" style="min-height: 300px; resize: vertical;">@ViewBag.Answer
+                                            </textarea>
+                                    </div>
+                                    <br />
+                                    <button class="btn btn-primary">Cevabı mail olarak gönder</button>
+                                </form>
+                            </div>
+                        </div>
+                        <hr class="my-4" />
+                        <a asp-action="MessageList" class="btn btn-light">
+                            Geri Dön
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Yummy.WebApi.Context;
 
@@ -11,9 +12,10 @@ using Yummy.WebApi.Context;
 namespace Yummy.WebApi.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    partial class ApiContextModelSnapshot : ModelSnapshot
+    [Migration("20260119180501_added_status_for_messages")]
+    partial class added_status_for_messages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -105,34 +107,6 @@ namespace Yummy.WebApi.Migrations
                     b.ToTable("Chefs");
                 });
 
-            modelBuilder.Entity("Yummy.WebApi.Entities.ChefEmployeeTask", b =>
-                {
-                    b.Property<int>("ChefId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EmployeeTaskId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("AssignDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DueDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Priority")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TaskStatus")
-                        .HasColumnType("int");
-
-                    b.HasKey("ChefId", "EmployeeTaskId");
-
-                    b.HasIndex("EmployeeTaskId");
-
-                    b.ToTable("ChefEmployeeTasks");
-                });
-
             modelBuilder.Entity("Yummy.WebApi.Entities.Contact", b =>
                 {
                     b.Property<int>("Id")
@@ -164,23 +138,6 @@ namespace Yummy.WebApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Contacts");
-                });
-
-            modelBuilder.Entity("Yummy.WebApi.Entities.EmployeeTask", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("EmployeeTasks");
                 });
 
             modelBuilder.Entity("Yummy.WebApi.Entities.Feature", b =>
@@ -470,25 +427,6 @@ namespace Yummy.WebApi.Migrations
                     b.ToTable("Testimonials");
                 });
 
-            modelBuilder.Entity("Yummy.WebApi.Entities.ChefEmployeeTask", b =>
-                {
-                    b.HasOne("Yummy.WebApi.Entities.Chef", "Chef")
-                        .WithMany("ChefEmployeeTasks")
-                        .HasForeignKey("ChefId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Yummy.WebApi.Entities.EmployeeTask", "EmployeeTasks")
-                        .WithMany("ChefEmployeeTasks")
-                        .HasForeignKey("EmployeeTaskId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Chef");
-
-                    b.Navigation("EmployeeTasks");
-                });
-
             modelBuilder.Entity("Yummy.WebApi.Entities.Product", b =>
                 {
                     b.HasOne("Yummy.WebApi.Entities.Category", "Category")
@@ -503,16 +441,6 @@ namespace Yummy.WebApi.Migrations
             modelBuilder.Entity("Yummy.WebApi.Entities.Category", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("Yummy.WebApi.Entities.Chef", b =>
-                {
-                    b.Navigation("ChefEmployeeTasks");
-                });
-
-            modelBuilder.Entity("Yummy.WebApi.Entities.EmployeeTask", b =>
-                {
-                    b.Navigation("ChefEmployeeTasks");
                 });
 #pragma warning restore 612, 618
         }

@@ -9,69 +9,142 @@
 <section class="section">
     <div class="section-body">
         <div class="row">
-            <div class="col-12 col-md-12 col-lg-12">
+            <div class="col-12">
                 <div class="card">
-                    <div class="card-header">
-                        <h4>Rezervasyonlar</h4>
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">Rezervasyonlar</h4>
+
+                        <div class="card-header-action">
+                            <span class="badge badge-light">
+                                Toplam: @Model.TotalCount
+                            </span>
+                        </div>
                     </div>
+
                     <div class="card-body">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Müşteri Adı</th>
-                                    <th scope="col">Müşteri Soyadı</th>
-                                    <th scope="col">Telefon Numarası</th>
-                                    <th scope="col">Rezervasyon Tarihi</th>
-                                    <th scope="col">Rezervasyon Saati</th>
-                                    <th scope="col">Kişi Sayısı</th>
-                                    <th scope="col"></th>
-                                    <th scope="col"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model.Items)
-                                {
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover align-middle">
+                                <thead>
                                     <tr>
-                                        <th scope="row">@count</th>
-                                        <td>@item.Name</td>
-                                        <td>@item.Surname</td>
-                                        <td>@item.PhoneNumber</td>
-                                        <td>@item.ReservationDate.ToString("dd MMMM yyyy")</td>
-                                        <td>@item.ReservationDate.ToString("HH:mm")</td>
-                                        <td>@item.CountOfPeople</td>
-                                        <td><a href="/Reservation/Delete/@item.Id" class="btn btn-danger">Sil</a></td>
-                                        <td><a href="/Reservation/Update/@item.Id" class="btn btn-info">Güncelle</a></td>
+                                        <th style="width:60px;">#</th>
+                                        <th>Müşteri</th>
+                                        <th>Telefon</th>
+                                        <th>Tarih</th>
+                                        <th>Saat</th>
+                                        <th class="text-center" style="width:90px;">Kişi</th>
+                                        <th class="text-right" style="width:170px;">İşlemler</th>
                                     </tr>
-                                    count++;
-                                }
-                            </tbody>
+                                </thead>
+                                <tbody>
+                                    @if (Model.Items == null || !Model.Items.Any())
+                                    {
+                                        <tr>
+                                            <td colspan="7" class="text-center text-muted py-4">
+                                                Kayıt bulunamadı.
+                                            </td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        foreach (var item in Model.Items)
+                                        {
+                                            <tr>
+                                                <td>@count</td>
 
-                        </table>
-                        <ul class="pagination">
-                            <li class="page-item @(Model.Page <= 1 ? "disabled" : "")">
-                                <a class="page-link" href="?page=@(Model.Page - 1)" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
+                                                <td>
+                                                    <div class="font-weight-600">@item.Name @item.Surname</div>
+                                                    <div class="text-muted small">#@item.Id</div>
+                                                </td>
 
-                            @for (int i = 1; i <= Model.TotalPages; i++)
-                            {
-                                <li class="page-item @(i == Model.Page ? "active" : "")">
-                                    <a class="page-link" href="?page=@i">@i</a>
+                                                <td class="font-weight-500">@item.PhoneNumber</td>
+
+                                                <td>@item.ReservationDate.ToString("dd MMMM yyyy")</td>
+                                                <td>@item.ReservationDate.ToString("HH:mm")</td>
+
+                                                <td class="text-center">
+                                                    <span class="badge badge-primary">@item.CountOfPeople</span>
+                                                </td>
+
+                                                <td class="text-right">
+                                                   
+                                                        <a href="/Reservation/Update/@item.Id"
+                                                           class="btn btn-info btn-sm">
+                                                            Güncelle
+                                                        </a>
+
+                                                        <a href="/Reservation/Delete/@item.Id"
+                                                           class="btn btn-danger btn-sm"
+                                                           onclick="return confirm('Bu rezervasyonu silmek istediğine emin misin?');">
+                                                            Sil
+                                                        </a>
+                                                    
+                                                </td>
+                                            </tr>
+
+                                            count++;
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div class="text-muted small">
+                                Sayfa @Model.Page / @Model.TotalPages
+                            </div>
+
+                            <ul class="pagination mb-0">
+                                <li class="page-item @(Model.Page <= 1 ? "disabled" : "")">
+                                    <a class="page-link" href="?page=@(Model.Page - 1)" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
                                 </li>
-                            }
 
-                            <li class="page-item @(Model.Page >= Model.TotalPages ? "disabled" : "")">
-                                <a class="page-link" href="?page=@(Model.Page + 1)" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        </ul>
+                                @{
+                                
+                                    int total = Model.TotalPages;
+                                    int current = Model.Page;
+
+                                    List<int> pages = new();
+
+                                    pages.Add(1);
+                                    for (int p = current - 2; p <= current + 2; p++)
+                                    {
+                                        if (p > 1 && p < total) pages.Add(p);
+                                    }
+                                    if (total > 1) pages.Add(total);
+
+                                    pages = pages.Distinct().OrderBy(x => x).ToList();
+
+                                    int prev = 0;
+                                    foreach (var p in pages)
+                                    {
+                                        if (prev != 0 && p - prev > 1)
+                                        {
+                                            <li class="page-item disabled">
+                                                <span class="page-link">…</span>
+                                            </li>
+                                        }
+
+                                        <li class="page-item @(p == current ? "active" : "")">
+                                            <a class="page-link" href="?page=@p">@p</a>
+                                        </li>
+
+                                        prev = p;
+                                    }
+                                }
+
+                                <li class="page-item @(Model.Page >= Model.TotalPages ? "disabled" : "")">
+                                    <a class="page-link" href="?page=@(Model.Page + 1)" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-

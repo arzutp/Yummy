@@ -9,63 +9,149 @@
 <section class="section">
     <div class="section-body">
         <div class="row">
-            <div class="col-12 col-md-12 col-lg-12">
+            <div class="col-12">
                 <div class="card">
-                    <div class="card-header">
-                        <h4>Mesajlar</h4>
+
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">Mesajlar</h4>
+
+                        <div class="card-header-action">
+                            <a href="/Message/Create" class="btn btn-success">
+                                <i class="fas fa-plus"></i> Ekle
+                            </a>
+                        </div>
                     </div>
+
                     <div class="card-body">
-                        <a href="/Message/Create" class="btn btn-success float-right">Ekle</a>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Gönderici</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Konu</th>
-                                    <th scope="col">Tarih</th>
-                                    <th scope="col"></th>
-                                    <th scope="col"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model.Items)
-                                {
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover align-middle">
+                                <thead>
                                     <tr>
-                                        <th scope="row">@count</th>
-                                        <td>@item.Name @item.Surname</td>
-                                        <td>@item.Email</td>
-                                        <td>@item.Subject</td>
-                                        <td>@item.SendDate.ToString("dd MMMM yyyy")</td>
-                                        <td><a href="/Message/Delete/@item.Id" class="btn btn-danger">Sil</a></td>
-                                        <td><a href="/Message/Detail/@item.Id" class="btn btn-info">Detay</a></td>
+                                        <th style="width:60px;">#</th>
+                                        <th>Gönderici</th>
+                                        <th>Email</th>
+                                        <th style="min-width:260px;">Konu</th>
+                                        <th style="width:160px;">Tarih</th>
+                                        <th class="text-right" style="width:260px;">İşlemler</th>
                                     </tr>
-                                    count++;
-                                }
-                            </tbody>
+                                </thead>
 
-                        </table>
-                        <ul class="pagination">
-                            <li class="page-item @(Model.Page <= 1 ? "disabled" : "")">
-                                <a class="page-link" href="?page=@(Model.Page - 1)" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
+                                <tbody>
+                                    @if (Model.Items == null || !Model.Items.Any())
+                                    {
+                                        <tr>
+                                            <td colspan="6" class="text-center text-muted py-4">
+                                                Kayıt bulunamadı.
+                                            </td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        foreach (var item in Model.Items)
+                                        {
+                                            <tr>
+                                                <td>@count</td>
 
-                            @for (int i = 1; i <= Model.TotalPages; i++)
-                            {
-                                <li class="page-item @(i == Model.Page ? "active" : "")">
-                                    <a class="page-link" href="?page=@i">@i</a>
-                                </li>
-                            }
+                                                <td>
+                                                    <div class="font-weight-600">@item.Name @item.Surname</div>
+                                                    <div class="text-muted small">#@item.Id</div>
+                                                </td>
 
-                            <li class="page-item @(Model.Page >= Model.TotalPages ? "disabled" : "")">
-                                <a class="page-link" href="?page=@(Model.Page + 1)" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        </ul>
+                                                <td class="text-muted">@item.Email</td>
+
+                                                <td>
+                                                    <div class="text-truncate" style="max-width: 380px;">
+                                                        @item.Subject
+                                                    </div>
+                                                </td>
+
+                                                <td>@item.SendDate.ToString("dd MMMM yyyy")</td>
+
+                                                <td class="text-right">
+                                                   
+                                                        <a href="/Message/Detail/@item.Id" class="btn btn-info btn-sm">
+                                                            Detay
+                                                        </a>
+
+                                                        <a href="/Message/AnswerMessageWithOpenAi/@item.Id" class="btn btn-primary btn-sm">
+                                                            Cevap Ver
+                                                        </a>
+
+                                                        <a href="/Message/Delete/@item.Id"
+                                                           class="btn btn-danger btn-sm"
+                                                           onclick="return confirm('Bu mesajı silmek istediğine emin misin?');">
+                                                            Sil
+                                                        </a>
+                                                 
+                                                </td>
+                                            </tr>
+
+                                            count++;
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        @* Pagination istersen aşağıdaki blok aktif edilebilir (TotalPages varsa) *@
+                        @if (Model.TotalPages > 1)
+                        {
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <div class="text-muted small">
+                                    Sayfa @Model.Page / @Model.TotalPages
+                                </div>
+
+                                <ul class="pagination mb-0">
+                                    <li class="page-item @(Model.Page <= 1 ? "disabled" : "")">
+                                        <a class="page-link" href="?page=@(Model.Page - 1)" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+
+                                    @{
+                                        int total = Model.TotalPages;
+                                        int current = Model.Page;
+
+                                        var pages = new List<int>();
+                                        pages.Add(1);
+
+                                        for (int p = current - 2; p <= current + 2; p++)
+                                        {
+                                            if (p > 1 && p < total) pages.Add(p);
+                                        }
+
+                                        if (total > 1) pages.Add(total);
+
+                                        pages = pages.Distinct().OrderBy(x => x).ToList();
+
+                                        int prev = 0;
+                                        foreach (var p in pages)
+                                        {
+                                            if (prev != 0 && p - prev > 1)
+                                            {
+                                                <li class="page-item disabled">
+                                                    <span class="page-link">…</span>
+                                                </li>
+                                            }
+
+                                            <li class="page-item @(p == current ? "active" : "")">
+                                                <a class="page-link" href="?page=@p">@p</a>
+                                            </li>
+
+                                            prev = p;
+                                        }
+                                    }
+
+                                    <li class="page-item @(Model.Page >= Model.TotalPages ? "disabled" : "")">
+                                        <a class="page-link" href="?page=@(Model.Page + 1)" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        }
                     </div>
+
                 </div>
             </div>
         </div>

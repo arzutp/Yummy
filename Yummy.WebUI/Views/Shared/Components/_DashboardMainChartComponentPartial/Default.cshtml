@@ -1,0 +1,172 @@
+﻿@using Newtonsoft.Json
+@model Tuple<List<ReservationChartDto>, ReservationSummaryDto>
+
+@{
+    var chartData = Model.Item1 ?? new List<ReservationChartDto>();
+    var summary = Model.Item2 ?? new ReservationSummaryDto();
+}
+
+<div class="row">
+    <div class="col-12 col-sm-12 col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h4>Rezervasyon Durum Grafiği</h4>
+                <div class="card-header-action">
+                    <a href="/Reservation/ReservationList/" class="btn btn-primary">View All</a>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="row">
+
+                    <div class="col-lg-9">
+                        <div style="height:300px;">
+                            <canvas id="reservationChart"></canvas>
+                        </div>
+
+                        <div class="row mb-0">
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                <div class="list-inline text-center">
+                                    <div class="list-inline-item p-r-30">
+                                        <i data-feather="arrow-up-circle" class="col-green"></i>
+                                        <h5 class="m-b-0">$675</h5>
+                                        <p class="text-muted font-14 m-b-0">Weekly Earnings</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                <div class="list-inline text-center">
+                                    <div class="list-inline-item p-r-30">
+                                        <i data-feather="arrow-down-circle" class="col-orange"></i>
+                                        <h5 class="m-b-0">$1,587</h5>
+                                        <p class="text-muted font-14 m-b-0">Monthly Earnings</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                <div class="list-inline text-center">
+                                    <div class="list-inline-item p-r-30">
+                                        <i data-feather="arrow-up-circle" class="col-green"></i>
+                                        <h5 class="mb-0 m-b-0">$45,965</h5>
+                                        <p class="text-muted font-14 m-b-0">Yearly Earnings</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <div class="row mt-5">
+                            <div class="col-7 col-xl-7 mb-3">Onaylanan Rezervasyonlar</div>
+                            <div class="col-5 col-xl-5 mb-3">
+                                <span class="text-big">@summary.ApprovedTotal.ToString("N0")</span>
+                                <sup class="col-green">+@summary.ApprovedPercent%</sup>
+                            </div>
+
+                            <div class="col-7 col-xl-7 mb-3">İptal Edilen Rezervasyonlar</div>
+                            <div class="col-5 col-xl-5 mb-3">
+                                <span class="text-big">@summary.CanceledTotal.ToString("N0")</span>
+                                <sup class="text-secondary">+@summary.CanceledPercent%</sup>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const labels = @Html.Raw(JsonConvert.SerializeObject(chartData.Select(x => x.Month).ToList()));
+    const approved = @Html.Raw(JsonConvert.SerializeObject(chartData.Select(x => x.Approved).ToList()));
+    const canceled = @Html.Raw(JsonConvert.SerializeObject(chartData.Select(x => x.Canceled).ToList()));
+
+    const valueLabelPlugin = {
+        id: 'valueLabelPlugin',
+        afterDatasetsDraw(chart) {
+            const { ctx } = chart;
+            ctx.save();
+            ctx.font = '12px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+
+            chart.data.datasets.forEach((dataset, datasetIndex) => {
+                const meta = chart.getDatasetMeta(datasetIndex);
+                if (meta.hidden) return;
+
+                meta.data.forEach((point, index) => {
+                    const value = dataset.data[index];
+                    if (value === null || value === undefined) return;
+
+                    ctx.fillStyle = dataset.borderColor;
+                    ctx.fillText(value, point.x, point.y - 10);
+                });
+            });
+
+            ctx.restore();
+        }
+    };
+
+    const ctx = document.getElementById('reservationChart').getContext('2d');
+
+    new Chart(ctx, {
+        type: 'line',
+        plugins: [valueLabelPlugin],
+        data: {
+            labels,
+            datasets: [
+                {
+                    label: 'Approved',
+                    data: approved,
+                    borderColor: '#4e73df',
+                    borderWidth: 5,
+                    tension: 0.35,
+                    cubicInterpolationMode: 'monotone',
+                    fill: false,
+                    pointRadius: 7,
+                    pointHoverRadius: 7,
+                    pointBorderWidth: 4,
+                    pointBackgroundColor: '#ffffff',
+                    pointBorderColor: '#4e73df'
+                },
+                {
+                    label: 'Canceled',
+                    data: canceled,
+                    borderColor: '#9e9e9e',
+                    borderWidth: 5,
+                    tension: 0.35,
+                    cubicInterpolationMode: 'monotone',
+                    fill: false,
+                    pointRadius: 7,
+                    pointHoverRadius: 7,
+                    pointBorderWidth: 4,
+                    pointBackgroundColor: '#ffffff',
+                    pointBorderColor: '#9e9e9e'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: { padding: { left: 10, right: 30, top: 10, bottom: 0 } },
+            plugins: {
+                legend: { display: false },
+                tooltip: { mode: 'index', intersect: false, padding: 12 }
+            },
+            interaction: { mode: 'index', intersect: false },
+            scales: {
+                x: {
+                    grid: { display: false },
+                    ticks: { padding: 10 }
+                },
+                y: {
+                    beginAtZero: true,
+                    grid: { color: 'rgba(0,0,0,0.06)' },
+                    ticks: { padding: 10, stepSize: 5 }
+                }
+            }
+        }
+    });
+</script>

@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewData["Title"] = "CreateRecipeWithOpenAi";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12 col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Yemek tarifi önerisi</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            <label>Elinizdeki malzemeler ve anahtar kelimeler</label>
+                            <input type="text" name="promptb" class="form-control" />
+                            <br />
+                            <button class="btn btn-primary">Oluştur</button>
+                        </form>
+                        <br />
+                        @if (ViewBag.Recipe != null)
+                        {
+                            <h5>Oluşturulan Tarif:</h5>
+                            @Html.Raw(@ViewBag.Recipe.ToString());  
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

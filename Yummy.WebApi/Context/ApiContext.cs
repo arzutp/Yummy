@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using System.Reflection.Emit;
 using Yummy.WebApi.Entities;
 
 namespace Yummy.WebApi.Context;
@@ -7,6 +9,7 @@ public class ApiContext : DbContext
 {
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        
         optionsBuilder.UseSqlServer("Data Source=ARZU\\SQLEXPRESS;Initial Catalog=YummyDB;Integrated Security=True;" +
             "Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
     }
@@ -24,4 +27,12 @@ public class ApiContext : DbContext
     public DbSet<SpecialEvent> SpecialEvents { get; set; }
     public DbSet<Notification> Notifications { get; set; }
     public DbSet<About> Abouts { get; set; }
+    public DbSet<EmployeeTask> EmployeeTasks { get; set; }
+    public DbSet<ChefEmployeeTask> ChefEmployeeTasks { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<ChefEmployeeTask>()
+            .HasKey(x => new { x.ChefId, x.EmployeeTaskId });
+    }
 }

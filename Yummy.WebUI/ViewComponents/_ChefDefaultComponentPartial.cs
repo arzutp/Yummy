@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Yummy.WebUI.Dtos;
 
 namespace Yummy.WebUI.ViewComponents;
@@ -19,7 +20,7 @@ public class _ChefDefaultComponentPartial : ViewComponent
             return View();
         }
         var jsonData = await response.Content.ReadAsStringAsync();
-        var values = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ResultChefDto>>(jsonData);
+        var values = JsonConvert.DeserializeObject<List<ResultChefDto>>(jsonData);
         return View(values);
     }
 }
