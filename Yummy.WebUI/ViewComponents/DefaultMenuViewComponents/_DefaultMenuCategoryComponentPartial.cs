@@ -15,8 +15,8 @@ public class _DefaultMenuCategoryComponentPartial : ViewComponent
 
     public async Task<IViewComponentResult> InvokeAsync()
     {
-        var client = _httpClientFactory.CreateClient();
-        var response = await client.GetAsync("https://localhost:7114/api/Categories");
+        var client = _httpClientFactory.CreateClient("YummyApi");
+        var response = await client.GetAsync("Categories");
 
         if(!response.IsSuccessStatusCode)
         {

@@ -17,9 +17,9 @@ public class ProductController : Controller
 
     public async Task<IActionResult> ProductList(int page = 1)
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
-        var response = await client.GetAsync($"https://localhost:7114/api/Products/ProductWithCategory?page={page}&pageSize=10");
+        var response = await client.GetAsync($"Products/ProductWithCategory?page={page}&pageSize=10");
 
         if (!response.IsSuccessStatusCode)
         {
@@ -46,7 +46,7 @@ public class ProductController : Controller
     [HttpGet]
     public async Task<IActionResult> Create()
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
         var categories = await GetCategories(client);
 
@@ -67,12 +67,12 @@ public class ProductController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(CreateProductDto createProductDto)
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
         var jsonData = JsonConvert.SerializeObject(createProductDto);
         StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-        var responseMessage = await client.PostAsync("https://localhost:7114/api/Products", stringContent);
+        var responseMessage = await client.PostAsync("Products", stringContent);
         if (!responseMessage.IsSuccessStatusCode)
         {
 
@@ -83,9 +83,9 @@ public class ProductController : Controller
 
     public async Task<IActionResult> Delete(int id)
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
-        await client.DeleteAsync($"https://localhost:7114/api/Products/{id}");
+        await client.DeleteAsync($"Products/{id}");
 
         return RedirectToAction("ProductList");
     }
@@ -93,9 +93,9 @@ public class ProductController : Controller
     [HttpGet]
     public async Task<IActionResult> Update(int id)
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
-        var responseMessage = await client.GetAsync("https://localhost:7114/api/Products/" + id);
+        var responseMessage = await client.GetAsync("Products/" + id);
         var jsonData = await responseMessage.Content.ReadAsStringAsync();
         var value = JsonConvert.DeserializeObject<GetProductByIdDto>(jsonData);
 
@@ -123,12 +123,21 @@ public class ProductController : Controller
     [HttpPost]
     public async Task<IActionResult> Update(UpdateProductDto updateProductDto)
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
         var jsonData = JsonConvert.SerializeObject(updateProductDto);
         StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-        var responeMessage = await client.PutAsync("https://localhost:7114/api/Products", stringContent);
+        var responseMessage = await client.PutAsync("Products", stringContent);
+
+        if (!responseMessage.IsSuccessStatusCode)
+        {
+            var errorContent = await responseMessage.Content.ReadAsStringAsync();
+
+            ModelState.AddModelError("", errorContent);
+
+            return View(updateProductDto);
+        }
 
         return RedirectToAction("ProductList");
     }
@@ -136,7 +145,7 @@ public class ProductController : Controller
     #region private methods
     private async Task<List<ResultCategoryDto>> GetCategories(HttpClient client)
     {
-        var responseMessage = await client.GetAsync("https://localhost:7114/api/Categories");
+        var responseMessage = await client.GetAsync("Categories");
 
         if (!responseMessage.IsSuccessStatusCode)
         {

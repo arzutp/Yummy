@@ -20,11 +20,11 @@ public class FeaturesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetFirst()
     {
-        var features = await _context.Features.ToListAsync();
+        var features = await _context.Features.FirstOrDefaultAsync();
 
-        return Ok(_mapper.Map<List<ResultFeatureDto>>(features));
+        return Ok(_mapper.Map<ResultFeatureDto>(features));
     }
 
     [HttpPost]

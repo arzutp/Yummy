@@ -28,6 +28,14 @@ public class ContactsController : ControllerBase
         return Ok(_mapper.Map<List<ResultContactDto>>(values));
     }
 
+    [HttpGet("GetFirst")]
+    public async Task<IActionResult> GetFirst()
+    {
+        var values = await _context.Contacts.FirstOrDefaultAsync();
+
+        return Ok(_mapper.Map<ResultContactDto>(values));
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create(CreateContactDto createContactDto)
     {

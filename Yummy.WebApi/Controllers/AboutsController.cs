@@ -21,11 +21,11 @@ public class AboutsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetFirst()
     {
-        var abouts = await _context.Abouts.ToListAsync();
+        var abouts = await _context.Abouts.FirstOrDefaultAsync();
 
-        return Ok(_mapper.Map<List<ResultAboutDto>>(abouts));
+        return Ok(_mapper.Map<ResultAboutDto>(abouts));
     }
 
     [HttpPost]

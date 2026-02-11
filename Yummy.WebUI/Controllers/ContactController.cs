@@ -15,9 +15,9 @@ public class ContactController : Controller
 
     public async Task<IActionResult> ContactList()
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
-        var response = await client.GetAsync("https://localhost:7114/api/Contacts");
+        var response = await client.GetAsync("Contacts");
 
         if (!response.IsSuccessStatusCode)
         {
@@ -40,12 +40,12 @@ public class ContactController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(CreateContactDto createContactDto)
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
         var jsonData = JsonConvert.SerializeObject(createContactDto);
         StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-        var responseMessage = await client.PostAsync("https://localhost:7114/api/Contacts", stringContent);
+        var responseMessage = await client.PostAsync("Contacts", stringContent);
 
         if (responseMessage == null)
         {
@@ -57,9 +57,9 @@ public class ContactController : Controller
 
     public async Task<IActionResult> Delete(int id)
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
-        await client.DeleteAsync($"https://localhost:7114/api/Contacts/{id}");
+        await client.DeleteAsync($"Contacts/{id}");
 
         return RedirectToAction("ContactList");
     }
@@ -67,9 +67,9 @@ public class ContactController : Controller
     [HttpGet]
     public async Task<IActionResult> Update(int id)
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
-        var responseMessage = await client.GetAsync($"https://localhost:7114/api/Contacts/{id}");
+        var responseMessage = await client.GetAsync($"Contacts/{id}");
 
         var jsonData = await responseMessage.Content.ReadAsStringAsync();
 
@@ -81,12 +81,12 @@ public class ContactController : Controller
     [HttpPost]
     public async Task<IActionResult> Update(UpdateContactDto updateContactDto)
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
         var jsonData = JsonConvert.SerializeObject(updateContactDto);
         StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-        var responeMessage = await client.PutAsync("https://localhost:7114/api/Contacts", stringContent);
+        var responeMessage = await client.PutAsync("Contacts", stringContent);
 
         return RedirectToAction("ContactList");
     }

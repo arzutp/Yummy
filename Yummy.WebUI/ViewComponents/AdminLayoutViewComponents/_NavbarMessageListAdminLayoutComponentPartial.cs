@@ -12,8 +12,8 @@ public class _NavbarMessageListAdminLayoutComponentPartial : ViewComponent
     }
     public async Task<IViewComponentResult> InvokeAsync()
     {
-        var client = _httpClientFactory.CreateClient();
-        var response = await client.GetAsync("https://localhost:7114/api/Messages/GetUnreadMesssages");
+        var client = _httpClientFactory.CreateClient("YummyApi");
+        var response = await client.GetAsync("Messages/GetUnreadMesssages");
         if (!response.IsSuccessStatusCode)
         {
             return View();

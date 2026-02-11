@@ -16,9 +16,9 @@ public class ChefController : Controller
 
     public async Task<IActionResult> ChefList()
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
-        var response = await client.GetAsync("https://localhost:7114/api/Chefs");
+        var response = await client.GetAsync("Chefs");
 
         if (response == null)
         {
@@ -40,12 +40,12 @@ public class ChefController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(CreateChefDto createChefDto)
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
         var jsonData = JsonConvert.SerializeObject(createChefDto);
         StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-        var responseMessage = await client.PostAsync("https://localhost:7114/api/Chefs", stringContent);
+        var responseMessage = await client.PostAsync("Chefs", stringContent);
 
         if (responseMessage == null)
         {
@@ -57,9 +57,9 @@ public class ChefController : Controller
 
     public async Task<IActionResult> Delete(int id)
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
-        await client.DeleteAsync($"https://localhost:7114/api/Chefs/{id}");
+        await client.DeleteAsync($"Chefs/{id}");
 
         return RedirectToAction("ChefList");
     }
@@ -67,9 +67,9 @@ public class ChefController : Controller
     [HttpGet]
     public async Task<IActionResult> Update(int id)
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
-        var responseMessage = await client.GetAsync($"https://localhost:7114/api/Chefs/{id}");
+        var responseMessage = await client.GetAsync($"Chefs/{id}");
 
         var jsonData = await responseMessage.Content.ReadAsStringAsync();
 
@@ -81,12 +81,12 @@ public class ChefController : Controller
     [HttpPost]
     public async Task<IActionResult> Update(UpdateChefDto updateChefDto)
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
         var jsonData = JsonConvert.SerializeObject(updateChefDto);
         StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-        var responeMessage = await client.PutAsync("https://localhost:7114/api/Chefs", stringContent);
+        var responeMessage = await client.PutAsync("Chefs", stringContent);
 
         return RedirectToAction("ChefList");
     }
@@ -94,9 +94,9 @@ public class ChefController : Controller
     [HttpGet]
     public async Task<IActionResult> Detail(int id)
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
-        var responseMessage = await client.GetAsync("https://localhost:7114/api/Chefs/" + id);
+        var responseMessage = await client.GetAsync("Chefs/" + id);
 
         var jsonData = await responseMessage.Content.ReadAsStringAsync();
 

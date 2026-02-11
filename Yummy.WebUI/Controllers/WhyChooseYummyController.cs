@@ -15,9 +15,9 @@ public class WhyChooseYummyController : Controller
 
     public async Task<IActionResult> WhyChooseYummyList()
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
-        var response = await client.GetAsync("https://localhost:7114/api/Services");
+        var response = await client.GetAsync("Services");
 
         if (response == null)
         {
@@ -39,12 +39,12 @@ public class WhyChooseYummyController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(CreateWhyChooseYummyDto createWhyChooseYummyDto)
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
         var jsonData = JsonConvert.SerializeObject(createWhyChooseYummyDto);
         StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-        var responseMessage = await client.PostAsync("https://localhost:7114/api/Services", stringContent);
+        var responseMessage = await client.PostAsync("Services", stringContent);
 
         if (responseMessage == null)
         {
@@ -56,9 +56,9 @@ public class WhyChooseYummyController : Controller
 
     public async Task<IActionResult> Delete(int id)
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
-        await client.DeleteAsync($"https://localhost:7114/api/Services/{id}");
+        await client.DeleteAsync($"Services/{id}");
 
         return RedirectToAction("WhyChooseYummyList");
     }
@@ -66,9 +66,9 @@ public class WhyChooseYummyController : Controller
     [HttpGet]
     public async Task<IActionResult> Update(int id)
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
-        var responseMessage = await client.GetAsync($"https://localhost:7114/api/Services/{id}");
+        var responseMessage = await client.GetAsync($"Services/{id}");
 
         var jsonData = await responseMessage.Content.ReadAsStringAsync();
 
@@ -80,12 +80,12 @@ public class WhyChooseYummyController : Controller
     [HttpPost]
     public async Task<IActionResult> Update(UpdateWhyChooseYummyDto updateWhyChooseYummyDto)
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
         var jsonData = JsonConvert.SerializeObject(updateWhyChooseYummyDto);
         StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-        var responeMessage = await client.PutAsync("https://localhost:7114/api/Services", stringContent);
+        var responeMessage = await client.PutAsync("Services", stringContent);
 
         return RedirectToAction("WhyChooseYummyList");
     }

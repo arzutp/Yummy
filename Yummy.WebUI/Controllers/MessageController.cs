@@ -21,9 +21,9 @@ public class MessageController : Controller
 
     public async Task<IActionResult> MessageList(int page = 1)
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
-        var response = await client.GetAsync($"https://localhost:7114/api/Messages/GetAllWithPagination?page={page}&pageSize=10");
+        var response = await client.GetAsync($"Messages/GetAllWithPagination?page={page}&pageSize=10");
 
         if (!response.IsSuccessStatusCode)
         {
@@ -56,12 +56,12 @@ public class MessageController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(CreateMessageDto createMessageDto)
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
         var jsonData = JsonConvert.SerializeObject(createMessageDto);
         StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-        var responseMessage = await client.PostAsync("https://localhost:7114/api/Messages/", stringContent);
+        var responseMessage = await client.PostAsync("Messages/", stringContent);
 
         if (!responseMessage.IsSuccessStatusCode)
         {
@@ -73,17 +73,19 @@ public class MessageController : Controller
 
     public async Task<IActionResult> Delete(int id)
     {
-        var client = _httpClientFactory.CreateClient();
-        await client.DeleteAsync("https://localhost:7114/api/Messages/" + id);
+        var client = _httpClientFactory.CreateClient("YummyApi");
+
+        await client.DeleteAsync("Messages/" + id);
+
         return RedirectToAction("MessageList");
     }
 
     [HttpGet]
     public async Task<IActionResult> Detail(int id)
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
-        var responseMessage = await client.GetAsync("https://localhost:7114/api/Messages/" + id);
+        var responseMessage = await client.GetAsync("Messages/" + id);
 
         var jsonData = await responseMessage.Content.ReadAsStringAsync();
 
@@ -95,9 +97,9 @@ public class MessageController : Controller
     [HttpGet]
     public async Task<IActionResult> AnswerMessageWithOpenAi(int id)
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
-        var responseMessage = await client.GetAsync("https://localhost:7114/api/Messages/" + id);
+        var responseMessage = await client.GetAsync("Messages/" + id);
 
         var jsonData = await responseMessage.Content.ReadAsStringAsync();
 
@@ -219,12 +221,12 @@ public class MessageController : Controller
             createMessageDto.Status = "Onay Bekliyor";
         }
 
-        var clientFactory = _httpClientFactory.CreateClient();
+        var clientFactory = _httpClientFactory.CreateClient("YummyApi");
 
         var jsonData = JsonConvert.SerializeObject(createMessageDto);
         StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-        var responseMessage = await clientFactory.PostAsync("https://localhost:7114/api/Messages/", stringContent);
+        var responseMessage = await clientFactory.PostAsync("Messages/", stringContent);
 
         if (!responseMessage.IsSuccessStatusCode)
         {
@@ -234,6 +236,3 @@ public class MessageController : Controller
         return RedirectToAction("Index", "Default");
     }
 }
-
-
-//  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

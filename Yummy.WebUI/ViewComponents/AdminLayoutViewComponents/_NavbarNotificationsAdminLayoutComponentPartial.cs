@@ -15,8 +15,8 @@ public class _NavbarNotificationsAdminLayoutComponentPartial : ViewComponent
 
     public async Task<IViewComponentResult> InvokeAsync()
     {
-        var client = _httpClientFactory.CreateClient();
-        var response = await client.GetAsync("https://localhost:7114/api/Notifications");
+        var client = _httpClientFactory.CreateClient("YummyApi");
+        var response = await client.GetAsync("Notifications");
         if (!response.IsSuccessStatusCode)
         {
             return View();

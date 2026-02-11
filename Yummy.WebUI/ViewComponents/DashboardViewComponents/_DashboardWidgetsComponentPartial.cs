@@ -14,14 +14,14 @@ public class _DashboardWidgetsComponentPartial : ViewComponent
 
     public async Task <IViewComponentResult> InvokeAsync()
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
         var dto = new ReservationStatisticsDto
         {
-            TotalCount = await GetReservationStatisticsAsync(client, "https://localhost:7114/api/Reservations/GetTotalReservation"),
-            PendingCount = await GetReservationStatisticsAsync(client, "https://localhost:7114/api/Reservations/GetPendingReservation"),
-            ApprovedCount = await GetReservationStatisticsAsync(client, "https://localhost:7114/api/Reservations/GetApprovedReservation"),
-            TotalCustomerCount = await GetReservationStatisticsAsync(client, "https://localhost:7114/api/Reservations/GetTotalCustomerCount"),
+            TotalCount = await GetReservationStatisticsAsync(client, "Reservations/GetTotalReservation"),
+            PendingCount = await GetReservationStatisticsAsync(client, "Reservations/GetPendingReservation"),
+            ApprovedCount = await GetReservationStatisticsAsync(client, "Reservations/GetApprovedReservation"),
+            TotalCustomerCount = await GetReservationStatisticsAsync(client, "Reservations/GetTotalCustomerCount"),
         };
 
         return View(dto);

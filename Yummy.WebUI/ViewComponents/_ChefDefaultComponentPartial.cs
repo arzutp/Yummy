@@ -13,8 +13,8 @@ public class _ChefDefaultComponentPartial : ViewComponent
     }
     public async Task<IViewComponentResult> InvokeAsync()
     {
-        var client = _httpClientFactory.CreateClient();
-        var response = await client.GetAsync("https://localhost:7114/api/Chefs");
+        var client = _httpClientFactory.CreateClient("YummyApi");
+        var response = await client.GetAsync("Chefs");
         if (!response.IsSuccessStatusCode)
         {
             return View();

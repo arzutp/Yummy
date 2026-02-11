@@ -15,8 +15,8 @@ public class _SpecialEventDefaultComponentPartial : ViewComponent
 
     public async Task<IViewComponentResult> InvokeAsync()
     {
-        var client = _httpClientFactory.CreateClient();
-        var response = await client.GetAsync("https://localhost:7114/api/SpecialEvents/GetActiveSpecialEvents");
+        var client = _httpClientFactory.CreateClient("YummyApi");
+        var response = await client.GetAsync("SpecialEvents/GetActiveSpecialEvents");
         if (!response.IsSuccessStatusCode)
         {
             return View();

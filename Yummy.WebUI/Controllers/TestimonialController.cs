@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System.Text;
 using Yummy.WebUI.Dtos;
 
 namespace Yummy.WebUI.Controllers;
@@ -16,9 +15,9 @@ public class TestimonialController : Controller
 
     public async Task<IActionResult> TestimonialList(int page = 1)
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
-        var response = await client.GetAsync($"https://localhost:7114/api/Testimonials/GetAllWithPagination?page={page}&pageSize=15");
+        var response = await client.GetAsync($"Testimonials/GetAllWithPagination?page={page}&pageSize=15");
 
         if (!response.IsSuccessStatusCode) 
         {
@@ -45,9 +44,9 @@ public class TestimonialController : Controller
     [HttpGet]
     public async Task<IActionResult> Detail(int id)
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
-        var responseMessage = await client.GetAsync("https://localhost:7114/api/Testimonials/" + id);
+        var responseMessage = await client.GetAsync("Testimonials/" + id);
 
         var jsonData = await responseMessage.Content.ReadAsStringAsync();
 
@@ -58,9 +57,9 @@ public class TestimonialController : Controller
 
     public async Task<IActionResult> Delete(int id)
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
-        await client.DeleteAsync("https://localhost:7114/api/Testimonials/" + id);
+        await client.DeleteAsync("Testimonials/" + id);
 
         return RedirectToAction("TestimonialList");
     }
@@ -77,12 +76,12 @@ public class TestimonialController : Controller
     //[HttpPost]
     //public async Task<IActionResult> Create(CreateTestimonialDto createTestimonialDto)
     //{
-    //    var client = _httpClientFactory.CreateClient();
+    //    var client = _httpClientFactory.CreateClient("YummyApi");
 
     //    var jsonData = JsonConvert.SerializeObject(createTestimonialDto);
     //    StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-    //    var responseMessage = await client.PostAsync("https://localhost:7114/api/Testimonials/", stringContent);
+    //    var responseMessage = await client.PostAsync("Testimonials/", stringContent);
 
     //    if (!responseMessage.IsSuccessStatusCode)
     //    {
@@ -95,9 +94,9 @@ public class TestimonialController : Controller
     //[HttpGet]
     //public async Task<IActionResult> Update(int id)
     //{
-    //    var client = _httpClientFactory.CreateClient();
+    //    var client = _httpClientFactory.CreateClient("YummyApi");
 
-    //    var responseMessage = await client.GetAsync("https://localhost:7114/api/Testimonials/" + id);
+    //    var responseMessage = await client.GetAsync("Testimonials/" + id);
 
     //    var jsonData = await responseMessage.Content.ReadAsStringAsync();
 
@@ -109,13 +108,13 @@ public class TestimonialController : Controller
     //[HttpPost]
     //public async Task<IActionResult> Update(UpdateTestimonialDto updateTestimonialDto)
     //{
-    //    var client = _httpClientFactory.CreateClient();
+    //    var client = _httpClientFactory.CreateClient("YummyApi");
 
     //    var jsonData = JsonConvert.SerializeObject(updateTestimonialDto);
 
     //    StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-    //    var responeMessage = await client.PutAsync("https://localhost:7114/api/Testimonials", stringContent);
+    //    var responeMessage = await client.PutAsync("Testimonials", stringContent);
 
     //    return RedirectToAction("TestimonialList");
     //}

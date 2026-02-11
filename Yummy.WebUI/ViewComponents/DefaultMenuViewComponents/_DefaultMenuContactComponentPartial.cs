@@ -2,13 +2,13 @@
 using Newtonsoft.Json;
 using Yummy.WebUI.Dtos;
 
-namespace Yummy.WebUI.ViewComponents;
+namespace Yummy.WebUI.ViewComponents.DefaultMenuViewComponents;
 
-public class _AboutDefaultComponentPartial : ViewComponent
+public class _DefaultMenuContactComponentPartial : ViewComponent
 {
     private readonly IHttpClientFactory _httpClientFactory;
 
-    public _AboutDefaultComponentPartial(IHttpClientFactory httpClientFactory)
+    public _DefaultMenuContactComponentPartial(IHttpClientFactory httpClientFactory)
     {
         _httpClientFactory = httpClientFactory;
     }
@@ -16,7 +16,7 @@ public class _AboutDefaultComponentPartial : ViewComponent
     public async Task<IViewComponentResult> InvokeAsync()
     {
         var client = _httpClientFactory.CreateClient("YummyApi");
-        var response = await client.GetAsync("Abouts");
+        var response = await client.GetAsync("Contacts/GetFirst");
 
         if (!response.IsSuccessStatusCode)
         {
@@ -24,7 +24,7 @@ public class _AboutDefaultComponentPartial : ViewComponent
         }
 
         var jsonData = await response.Content.ReadAsStringAsync();
-        var values = JsonConvert.DeserializeObject<ResultAboutDto>(jsonData);
+        var values = JsonConvert.DeserializeObject<ResultContactDto>(jsonData);
         return View(values);
     }
 }

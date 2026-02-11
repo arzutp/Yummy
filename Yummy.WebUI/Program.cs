@@ -13,7 +13,7 @@ builder.Services.AddHttpClient("openai", c =>
 
 builder.Services.AddHttpClient("YummyApi", c =>
 {
-    c.BaseAddress = new Uri("https://localhost:7114/");
+    c.BaseAddress = new Uri("https://localhost:7114/api/");
 });
 
 

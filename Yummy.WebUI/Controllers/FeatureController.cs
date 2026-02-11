@@ -16,9 +16,9 @@ public class FeatureController : Controller
 
     public async Task<IActionResult> FeatureList()
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
-        var response = await client.GetAsync("https://localhost:7114/api/Features");
+        var response = await client.GetAsync("Features");
 
         if (response == null)
         {
@@ -26,7 +26,7 @@ public class FeatureController : Controller
         }
 
         var jsonData = await response.Content.ReadAsStringAsync();
-        var result = JsonConvert.DeserializeObject<List<ResultFeatureDto>>(jsonData);
+        var result = JsonConvert.DeserializeObject<ResultFeatureDto>(jsonData);
 
         return View(result);    
     }
@@ -40,12 +40,12 @@ public class FeatureController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(CreateFeatureDto createFeatureDto)
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
         var jsonData = JsonConvert.SerializeObject(createFeatureDto);
         StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-        var responseMessage = await client.PostAsync("https://localhost:7114/api/Features", stringContent);
+        var responseMessage = await client.PostAsync("Features", stringContent);
 
         if (responseMessage == null)
         {
@@ -57,9 +57,9 @@ public class FeatureController : Controller
 
     public async Task<IActionResult> Delete(int id)
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
-        await client.DeleteAsync($"https://localhost:7114/api/Features/{id}");
+        await client.DeleteAsync($"Features/{id}");
 
         return RedirectToAction("FeatureList");
     }
@@ -67,9 +67,9 @@ public class FeatureController : Controller
     [HttpGet]
     public async Task<IActionResult> Update(int id) 
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
-        var responseMessage = await client.GetAsync($"https://localhost:7114/api/Features/{id}");
+        var responseMessage = await client.GetAsync($"Features/{id}");
 
         var jsonData = await responseMessage.Content.ReadAsStringAsync();
 
@@ -81,12 +81,12 @@ public class FeatureController : Controller
     [HttpPost]
     public async Task<IActionResult> Update(UpdateFeatureDto updateFeatureDto)
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
         var jsonData = JsonConvert.SerializeObject(updateFeatureDto);
         StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-        var responeMessage = await client.PutAsync("https://localhost:7114/api/Features", stringContent);
+        var responeMessage = await client.PutAsync("Features", stringContent);
 
         return RedirectToAction("FeatureList");
     }

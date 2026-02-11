@@ -1,4 +1,5 @@
-﻿
+﻿@model ResultContactDto
+
 <footer id="footer" class="footer dark-background">
 
     <div class="container">
@@ -7,8 +8,7 @@
                 <i class="bi bi-geo-alt icon"></i>
                 <div class="address">
                     <h4>Adres</h4>
-                    <p>1453 Cumhuriyet Sokak</p>
-                    <p>İstanbu, Kağıthane</p>
+                    @Model.Address
                     <p></p>
                 </div>
 
@@ -19,8 +19,8 @@
                 <div>
                     <h4>İletişim</h4>
                     <p>
-                        <strong>Tel:</strong> <span>0256 213 88 08</span><br>
-                        <strong>Email:</strong> <span>yummy@example.com</span><br>
+                        <strong>Tel:</strong> <span>@Model.Phone</span><br>
+                        <strong>Email:</strong> <span>@Model.Email</span><br>
                     </p>
                 </div>
             </div>
@@ -30,8 +30,7 @@
                 <div>
                     <h4>Çalışma Saatlerimiz</h4>
                     <p>
-                        <strong>Salı - Pazar</strong> <span>11:00 - 02:00</span><br>
-                        <strong>Pazartesi</strong>: <span>Kapalı</span>
+                        @Html.Raw(Model.OpenHours)
                     </p>
                 </div>
             </div>

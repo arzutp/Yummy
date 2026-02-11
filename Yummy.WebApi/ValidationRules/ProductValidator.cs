@@ -19,6 +19,6 @@ public class ProductValidator : AbstractValidator<Product>
         RuleFor(x => x.Description)
             .NotEmpty().WithMessage("Ürün açıklaması boş geçmeyiniz.")
             .MinimumLength(2).WithMessage("En az 2 karakter giriniz.")
-            .MaximumLength(50).WithMessage("En fazla 500 karakter giriniz");
+            .MaximumLength(500).WithMessage("En fazla 500 karakter giriniz");
     }
 }

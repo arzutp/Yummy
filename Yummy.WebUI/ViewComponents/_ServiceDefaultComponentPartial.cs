@@ -15,8 +15,8 @@ public class _ServiceDefaultComponentPartial : ViewComponent
 
     public async Task<IViewComponentResult> InvokeAsync()
     {
-        var client = _httpClientFactory.CreateClient();
-        var response = await client.GetAsync("https://localhost:7114/api/Services");
+        var client = _httpClientFactory.CreateClient("YummyApi");
+        var response = await client.GetAsync("Services");
         if(!response.IsSuccessStatusCode)
         {
             return View();

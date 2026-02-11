@@ -16,9 +16,9 @@ public class ReservationController : Controller
 
     public async Task<IActionResult> ReservationList(int page = 1)
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
-        var response = await client.GetAsync($"https://localhost:7114/api/Reservations/?page={page}&pageSize=10");
+        var response = await client.GetAsync($"Reservations/?page={page}&pageSize=10");
 
         if (!response.IsSuccessStatusCode)
         {
@@ -51,12 +51,12 @@ public class ReservationController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(CreateReservationDto createReservationDto)
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
         var jsonData = JsonConvert.SerializeObject(createReservationDto);
         StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-        var responseMessage = await client.PostAsync("https://localhost:7114/api/Reservations/", stringContent);
+        var responseMessage = await client.PostAsync("Reservations/", stringContent);
 
         if (!responseMessage.IsSuccessStatusCode)
         {
@@ -68,17 +68,17 @@ public class ReservationController : Controller
 
     public async Task<IActionResult> Delete(int id)
     {
-        var client = _httpClientFactory.CreateClient();
-        await client.DeleteAsync("https://localhost:7114/api/Reservations/" + id);
+        var client = _httpClientFactory.CreateClient("YummyApi");
+        await client.DeleteAsync("Reservations/" + id);
         return RedirectToAction("ReservationList");
     }
 
     [HttpGet]
     public async Task<IActionResult> Update(int id)
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
-        var responseMessage = await client.GetAsync("https://localhost:7114/api/Reservations/" + id);
+        var responseMessage = await client.GetAsync("Reservations/" + id);
         var jsonData = await responseMessage.Content.ReadAsStringAsync();
         var value = JsonConvert.DeserializeObject<GetByIdReservationDto>(jsonData);
 
@@ -88,12 +88,12 @@ public class ReservationController : Controller
     [HttpPost]
     public async Task<IActionResult> Update(UpdateReservationDto updateReservationDto)
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("YummyApi");
 
         var jsonData = JsonConvert.SerializeObject(updateReservationDto);
         StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-        var responeMessage = await client.PutAsync("https://localhost:7114/api/Reservations", stringContent);
+        var responeMessage = await client.PutAsync("Reservations", stringContent);
 
         return RedirectToAction("ReservationList");
     }
