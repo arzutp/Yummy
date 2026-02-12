@@ -1,17 +1,13 @@
-﻿using Yummy.WebApi.Enums;
+﻿using Yummy.WebApi.Entities;
+using Yummy.WebApi.Enums;
 
-namespace Yummy.WebApi.Entities;
+namespace Yummy.WebApi.Dtos.ChefEmployeeTaskDtos;
 
-public class ChefEmployeeTask
+public class GetByIdChefEmployeeTaskDto
 {
     public int Id { get; set; }
-
     public int ChefId { get; set; }
-    public Chef Chef { get; set; }
-
     public int EmployeeTaskId { get; set; }
-    public EmployeeTask EmployeeTasks { get; set; }
-
     public DateTime AssignDate { get; set; }
     public DateTime DueDate { get; set; }
     public bool TaskStatus { get; set; }

@@ -1,0 +1,49 @@
+﻿@using Yummy.WebUI.Enums
+@model GetByIdChefEmployeeTaskDto
+
+@{
+    ViewData["Title"] = "Update";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12 col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Görevlendirme Sayfası</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            <input type="hidden" asp-for="Id" />
+                            <label>Görev Kategorisi</label>
+                            <select asp-for="EmployeeTaskId" class="form-control" asp-items="Model.Tasks">
+                                <option value="">--Görev Seçiniz--</option>
+                            </select>
+                            <br />
+                            <label>Şefler Kategorisi</label>
+                            <select asp-for="ChefId" class="form-control" asp-items="Model.Chefs">
+                                <option value="">--Şef Seçiniz--</option>
+                            </select>
+                            <br />                           
+                            <label>Son Teslim Tarihi</label>
+                            <div>
+                                <input type="datetime-local" asp-for="DueDate" class="form-control" id="date" placeholder="Tarih" required="">
+                            </div>
+                            <div class="form-group">
+                                <label>Görev Durumu</label>
+                                <select asp-for="TaskStatus" class="form-control">
+                                    <option value="false">Devam Ediyor</option>
+                                    <option value="true">Tamamlandı</option>
+                                </select>
+                            </div>
+
+                            <button class="btn btn-primary">Güncelle</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -29,10 +29,4 @@ public class ApiContext : DbContext
     public DbSet<About> Abouts { get; set; }
     public DbSet<EmployeeTask> EmployeeTasks { get; set; }
     public DbSet<ChefEmployeeTask> ChefEmployeeTasks { get; set; }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<ChefEmployeeTask>()
-            .HasKey(x => new { x.ChefId, x.EmployeeTaskId });
-    }
 }

@@ -2,7 +2,9 @@
 using Yummy.WebApi.Dtos.AboutDtos;
 using Yummy.WebApi.Dtos.CategoryDtos;
 using Yummy.WebApi.Dtos.ChefDtos;
+using Yummy.WebApi.Dtos.ChefEmployeeTaskDtos;
 using Yummy.WebApi.Dtos.ContactDtos;
+using Yummy.WebApi.Dtos.EmployeeTasksDtos;
 using Yummy.WebApi.Dtos.FeatureDtos;
 using Yummy.WebApi.Dtos.ImageDtos;
 using Yummy.WebApi.Dtos.MessageDtos;
@@ -34,6 +36,23 @@ public class GeneralMapping : Profile
         CreateMap<Chef, GetByIdChefDto>().ReverseMap();
         CreateMap<Chef, ResultChefDto>().ReverseMap();
         CreateMap<Chef, UpdateChefDto>().ReverseMap();
+
+        CreateMap<ChefEmployeeTask, CreateChefEmployeeTaskDto>().ReverseMap();
+        CreateMap<ChefEmployeeTask, GetByIdChefEmployeeTaskDto>().ReverseMap();
+        CreateMap<ChefEmployeeTask, ResultChefEmployeeTaskDto>()
+            .ForMember(x => x.ChefName,
+                    opt => opt.MapFrom(src => src.Chef.NameSurname))
+            .ForMember(x => x.TaskName,
+                    opt => opt.MapFrom(src => src.EmployeeTasks.Name))
+            .ForMember(x => x.TaskPriority,
+                    opt => opt.MapFrom(src => src.EmployeeTasks.Priority));
+
+        CreateMap<ChefEmployeeTask, UpdateChefEmployeeTaskDto>().ReverseMap();
+
+        CreateMap<EmployeeTask, CreateEmployeeTaskDto>().ReverseMap();
+        CreateMap<EmployeeTask, GetByIdEmployeeTaskDto>().ReverseMap();
+        CreateMap<EmployeeTask, ResultEmployeeTaskDto>().ReverseMap();
+        CreateMap<EmployeeTask, UpdateEmployeeTaskDto>().ReverseMap();
 
         CreateMap<Message, CreateMessageDto>().ReverseMap();
         CreateMap<Message, GetByIdMessageDto>().ReverseMap();

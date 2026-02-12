@@ -1,0 +1,100 @@
+﻿@using Yummy.WebUI.Enums
+@using Yummy.WebUI.Extensions
+@model LastTaskSummaryDto
+
+@{
+    ViewData["Title"] = "Görev Detayı";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+
+                <div class="card shadow-sm">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">Görev Detayı</h4>
+
+                        @if (Model.TaskStatus)
+                        {
+                            <span class="badge badge-success px-3 py-2">Tamamlandı</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-warning px-3 py-2">Devam Ediyor</span>
+                        }
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-4">
+                                <h6 class="text-muted">Görev</h6>
+                                <p class="font-weight-bold">@Model.TaskName</p>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <h6 class="text-muted">Öncelik</h6>
+                                @{
+                                    string badgeClass = Model.TaskPriority switch
+                                    {
+                                        Priority.High => "badge badge-danger",
+                                        Priority.Low => "badge badge-warning",
+                                        _ => "badge badge-secondary"
+                                    };
+                                }
+                                <span class="@badgeClass">
+                                    @Model.TaskPriority.GetDisplayName()
+                                </span>
+                            </div>
+
+                            @foreach (var item in Model.Chefs)
+                            {
+                                <div class="col-md-6 mb-4">
+                                    <h6 class="text-muted">Şef</h6>
+                                    <div class="d-flex align-items-center">
+                                        <img src="@item.ImageUrl"
+                                             class="rounded-circle mr-3"
+                                             width="50"
+                                             height="50"
+                                             style="object-fit:cover;" />
+                                        <span class="font-weight-bold">@item.NameSurname</span>
+                                    </div>
+                                </div>
+                            }
+
+                            <div class="col-md-6 mb-4">
+                                <h6 class="text-muted">Son Teslim Tarihi</h6>
+                                <p>@Model.DueDate.ToString("dd MMMM yyyy HH:mm")</p>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <h6 class="text-muted">Atanma Tarihi</h6>
+                                <p>@Model.AssignDate.ToString("dd MMMM yyyy HH:mm")</p>
+                            </div>
+
+                        </div>
+
+                        <hr />
+
+                        <div class="text-right">
+                            <a asp-action="Index" asp-controller="Dashboard" class="btn btn-secondary">
+                                Geri Dön
+                            </a>
+
+                            <a asp-action="Update"
+                               asp-route-id="@Model.Id"
+                               class="btn btn-primary">
+                                Düzenle
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>

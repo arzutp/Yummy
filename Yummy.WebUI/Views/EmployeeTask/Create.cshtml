@@ -1,0 +1,35 @@
+﻿@using Yummy.WebUI.Enums
+@model CreateEmployeeTaskDto
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12 col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Görev Ekleme Sayfası</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            <label>Görev Adı</label>
+                            <input type="text" asp-for="Name" class="form-control" />
+                            <br />
+                            <label>Öncelik Durumu</label>
+                            <select asp-for="Priority"
+                                    asp-items="Html.GetEnumSelectList<Priority>()"
+                                    class="form-control">
+                            </select>
+                            <br />
+                            <button class="btn btn-primary">Oluştur</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,7 +1,9 @@
-﻿@model PagedCategoryResult
+﻿@using Yummy.WebUI.Enums
+@using Yummy.WebUI.Extensions
+@model PagedEmployeeTaskResult
 
 @{
-    ViewData["Title"] = "CategoryList";
+    ViewData["Title"] = "EmployeeTaskList";
     Layout = "~/Views/AdminLayout/Index.cshtml";
     int count = (Model.Page - 1) * Model.PageSize + 1;
 }
@@ -12,10 +14,10 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h4 class="mb-0">Kategoriler</h4>
+                        <h4 class="mb-0">Görevler</h4>
 
                         <div class="card-header-action">
-                            <a href="/Category/Create" class="btn btn-success">
+                            <a href="/EmployeeTask/Create" class="btn btn-success">
                                 <i class="fas fa-plus"></i> Ekle
                             </a>
                         </div>
@@ -27,7 +29,8 @@
                                 <thead>
                                     <tr>
                                         <th style="width:60px;">#</th>
-                                        <th>Kategori Adı</th>
+                                        <th>Görev Adı</th>
+                                        <th>Öncelik Durumu</th>
                                         <th class="text-right" style="width:180px;"></th>
                                     </tr>
                                 </thead>
@@ -47,20 +50,32 @@
                                             <tr>
                                                 <td>@count</td>
                                                 <td class="font-weight-600">@item.Name</td>
-
+                                                <td>
+                                                    @{
+                                                        string badgeClass = item.Priority switch
+                                                        {
+                                                            Priority.High => "badge badge-danger",
+                                                            Priority.Low => "badge badge-warning",
+                                                            _ => "badge badge-secondary"
+                                                        };
+                                                    }
+                                                    <span class="@badgeClass">
+                                                        @item.Priority.GetDisplayName()
+                                                    </span>
+                                                </td>
                                                 <td class="text-right">
-                                                   
-                                                        <a href="/Category/Update/@item.Id"
-                                                           class="btn btn-info btn-sm">
-                                                            Güncelle
-                                                        </a>
 
-                                                        <a href="/Category/Delete/@item.Id"
-                                                           class="btn btn-danger btn-sm"
-                                                           onclick="return confirm('\" @item.Name\" kategorisini silmek istediğine emin misin?');">
-                                                            Sil
-                                                        </a>
-                                                    
+                                                    <a href="/EmployeeTask/Update/@item.Id"
+                                                       class="btn btn-info btn-sm">
+                                                        Güncelle
+                                                    </a>
+
+                                                    <a href="/EmployeeTask/Delete/@item.Id"
+                                                       class="btn btn-danger btn-sm"
+                                                       onclick="return confirm('\" @item.Name\" kategorisini silmek istediğine emin misin?');">
+                                                        Sil
+                                                    </a>
+
                                                 </td>
                                             </tr>
 
