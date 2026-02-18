@@ -27,12 +27,12 @@ public class AiController : Controller
 
         var requestData = new
         {
-            model = "gpt-5.1",
+            model = "gpt-4o-mini",
             messages = new[]
             {
                 new { 
                     role = "system", 
-                    content = "Sen bir resoran için yemek önerileri yapan bir yapay zeka asistanısın." +
+                    content = "Sen bir restoran için yemek önerileri yapan bir yapay zeka asistanısın." +
                     "Amacımız kullanıcı tarafından girilen malzemelere göre yemek tarifi önerisinde bulunmak."
                 },
                 new {

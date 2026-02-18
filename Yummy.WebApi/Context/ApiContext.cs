@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using System.Reflection.Emit;
 using Yummy.WebApi.Entities;
 
 namespace Yummy.WebApi.Context;
@@ -29,4 +27,5 @@ public class ApiContext : DbContext
     public DbSet<About> Abouts { get; set; }
     public DbSet<EmployeeTask> EmployeeTasks { get; set; }
     public DbSet<ChefEmployeeTask> ChefEmployeeTasks { get; set; }
+    public DbSet<GroupReservation> GroupReservations { get; set; }
 }

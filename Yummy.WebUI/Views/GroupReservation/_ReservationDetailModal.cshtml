@@ -1,0 +1,267 @@
+﻿<!-- Rezervasyon Detay Modal -->
+<div class="modal" id="reservationDetailModal" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-info-circle"></i> Rezervasyon Detayları
+                </h5>
+                <button type="button" class="close text-white" onclick="closeReservationModal()">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="reservationDetailContent" style="max-height: 60vh; overflow-y: auto;">
+                <div class="text-center py-5">
+                    <div class="spinner-border text-primary"></div>
+                    <p class="mt-3 text-muted">Yükleniyor...</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeReservationModal()">
+                    <i class="fas fa-times"></i> Kapat
+                </button>
+                <a href="#" id="editReservationBtn" class="btn btn-primary">
+                    <i class="fas fa-edit"></i> Düzenle
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="customModalBackdrop" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1040;"></div>
+
+<style>
+    #reservationDetailModal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1050;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    #reservationDetailModal.show {
+        display: block !important;
+    }
+
+    .modal-dialog-centered {
+        display: flex;
+        align-items: center;
+        min-height: calc(100% - 1rem);
+    }
+</style>
+
+<script>
+    function openReservationDetailModal(reservationId) {
+        document.getElementById('customModalBackdrop').style.display = 'block';
+
+        var modal = document.getElementById('reservationDetailModal');
+        modal.style.display = 'block';
+        modal.classList.add('show');
+
+        document.body.style.overflow = 'hidden';
+
+        document.getElementById('reservationDetailContent').innerHTML = `
+            <div class="text-center py-5">
+                <div class="spinner-border text-primary"></div>
+                <p class="mt-3 text-muted">Rezervasyon detayları yükleniyor...</p>
+            </div>
+        `;
+
+        fetch('/GroupReservation/GetReservationDetail/' + reservationId)
+            .then(response => response.json())
+            .then(response => {
+                if (response.success) {
+                    displayReservationDetail(response.data);
+                } else {
+                    document.getElementById('reservationDetailContent').innerHTML = `
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle"></i> ${response.message}
+                        </div>
+                    `;
+                }
+            })
+            .catch(error => {
+                console.error('Hata:', error);
+                document.getElementById('reservationDetailContent').innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Rezervasyon detayları yüklenirken bir hata oluştu.
+                    </div>
+                `;
+            });
+    }
+
+    function closeReservationModal() {
+
+        var modal = document.getElementById('reservationDetailModal');
+        modal.style.display = 'none';
+        modal.classList.remove('show');
+
+        document.getElementById('customModalBackdrop').style.display = 'none';
+
+        document.body.style.overflow = '';
+    }
+
+    document.getElementById('customModalBackdrop').addEventListener('click', function() {
+        closeReservationModal();
+    });
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            var modal = document.getElementById('reservationDetailModal');
+            if (modal.classList.contains('show')) {
+                closeReservationModal();
+            }
+        }
+    });
+
+    function displayReservationDetail(data) {
+        window.currentReservationData = data;
+
+        var editBtn = document.getElementById('editReservationBtn');
+        if (editBtn) {
+            editBtn.href = '/GroupReservation/Update/' + data.id;
+        }
+
+        var statusBadge = getStatusBadge(data.status);
+        var priorityBadge = getPriorityBadge(data.priority);
+
+        var html = `
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-primary text-white">
+                                <h6 class="m-0"><i class="fas fa-users"></i> Grup Bilgileri</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-2">
+                                    <small class="text-muted d-block">Grup Başlığı</small>
+                                    <strong>${data.groupTitle}</strong>
+                                </div>
+                                <div class="mb-0">
+                                    <small class="text-muted d-block">Kişi Sayısı</small>
+                                    <span class="badge badge-info">${data.personCount} Kişi</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-success text-white">
+                                <h6 class="m-0"><i class="fas fa-user-tie"></i> İletişim</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-2">
+                                    <small class="text-muted d-block">Sorumlu Kişi</small>
+                                    <strong>${data.responsibleCustomerName}</strong>
+                                </div>
+                                <div class="mb-2">
+                                    <small class="text-muted d-block">Telefon</small>
+                                    <a href="tel:${data.phoneNumber}">${data.phoneNumber}</a>
+                                </div>
+                                ${data.email ? `
+                                <div class="mb-0">
+                                    <small class="text-muted d-block">Email</small>
+                                    <a href="mailto:${data.email}">${data.email}</a>
+                                </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-info text-white">
+                                <h6 class="m-0"><i class="fas fa-calendar"></i> Tarihler</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-2">
+                                    <small class="text-muted d-block">Rezervasyon</small>
+                                    <strong>${formatDate(data.reservationDate)}</strong>
+                                </div>
+                                <div class="mb-0">
+                                    <small class="text-muted d-block">Son İşlem</small>
+                                    <strong>${formatDate(data.lastProcessDate)}</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-warning text-white">
+                                <h6 class="m-0"><i class="fas fa-info-circle"></i> Durum</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-2">
+                                    <small class="text-muted d-block">Rezervasyon Durumu</small>
+                                    ${statusBadge}
+                                </div>
+                                <div class="mb-0">
+                                    <small class="text-muted d-block">Öncelik</small>
+                                    ${priorityBadge}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                ${data.details ? `
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-secondary text-white">
+                                <h6 class="m-0"><i class="fas fa-file-alt"></i> Detaylar</h6>
+                            </div>
+                            <div class="card-body">
+                                <p class="mb-0" style="white-space: pre-wrap;">${data.details}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                ` : ''}
+            </div>
+        `;
+
+        document.getElementById('reservationDetailContent').innerHTML = html;
+    }
+
+    function getStatusBadge(status) {
+        var badges = {
+            2: { class: 'badge-danger', text: 'İptal Edildi', icon: 'fa-times-circle' },
+            0: { class: 'badge-warning', text: 'Onay Bekleniyor', icon: 'fa-clock' },
+            1: { class: 'badge-success', text: 'Onaylandı', icon: 'fa-check-circle' },
+            'Cancel': { class: 'badge-danger', text: 'İptal Edildi', icon: 'fa-times-circle' },
+            'Wait': { class: 'badge-warning', text: 'Onay Bekleniyor', icon: 'fa-clock' },
+            'Approved': { class: 'badge-success', text: 'Onaylandı', icon: 'fa-check-circle' }
+        };
+        var badge = badges[status] || { class: 'badge-secondary', text: status, icon: 'fa-question' };
+        return `<span class="badge ${badge.class}"><i class="fas ${badge.icon}"></i> ${badge.text}</span>`;
+    }
+
+    function getPriorityBadge(priority) {
+        var badges = {
+            2: { class: 'badge-danger', text: 'Yüksek' },
+            1: { class: 'badge-warning', text: 'Orta' },
+            0: { class: 'badge-info', text: 'Düşük' },
+            'High': { class: 'badge-danger', text: 'Yüksek' },
+            'Medium': { class: 'badge-warning', text: 'Orta' },
+            'Low': { class: 'badge-info', text: 'Düşük' }
+        };
+        var badge = badges[priority] || { class: 'badge-secondary', text: priority };
+        return `<span class="badge ${badge.class}"><i class="fas fa-flag"></i> ${badge.text}</span>`;
+    }
+
+    function formatDate(dateString) {
+        var date = new Date(dateString);
+        return date.toLocaleDateString('tr-TR') + ' ' + date.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+    }
+</script>

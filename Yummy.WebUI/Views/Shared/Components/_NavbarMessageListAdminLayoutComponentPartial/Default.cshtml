@@ -19,7 +19,7 @@
 
             @foreach (var item in Model)
             {
-                <a href="/Messages/GetById/@item.Id" class="dropdown-item">
+                <a href="/Message/Detail/@item.Id" class="dropdown-item">
                     <span class="dropdown-item-avatar text-white">
                         <img alt="image" src="/otika-bootstrap-admin-template/assets/img/users/user-1.png" class="rounded-circle">
                     </span> <span class="dropdown-item-desc">
@@ -35,7 +35,7 @@
             
         </div>
         <div class="dropdown-footer text-center">
-            <a href="/Messages">Tüm Mesajları Gör<i class="fas fa-chevron-right"></i></a>
+            <a href="/Message/MessageList">Tüm Mesajları Gör<i class="fas fa-chevron-right"></i></a>
         </div>
     </div>
 </li>

@@ -1,0 +1,180 @@
+﻿@model GetByIdGroupReservationDto
+@using Yummy.WebUI.Enums
+@using Yummy.WebUI.Extensions
+
+@{
+    ViewData["Title"] = "Grup Rezervasyonu Düzenle";
+}
+
+<div class="main-content">
+    <section class="section">
+        <div class="section-header">
+            <h1>Grup Rezervasyonu Düzenle</h1>
+        </div>
+
+        <div class="section-body">
+            <!-- Mesajlar -->
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check-circle"></i> @TempData["SuccessMessage"]
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-triangle"></i> @TempData["ErrorMessage"]
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+
+            <form asp-action="Update" method="post">
+                <input type="hidden" asp-for="Id" />
+
+                <div class="row">
+                    <!-- Grup Bilgileri -->
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4><i class="fas fa-users"></i> Grup Bilgileri</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label asp-for="GroupTitle"></label>
+                                    <input asp-for="GroupTitle" class="form-control" />
+                                    <span asp-validation-for="GroupTitle" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="PersonCount"></label>
+                                    <input asp-for="PersonCount" type="number" class="form-control" min="1" />
+                                    <span asp-validation-for="PersonCount" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- İletişim Bilgileri -->
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4><i class="fas fa-user-tie"></i> İletişim Bilgileri</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label asp-for="ResponsibleCustomerName"></label>
+                                    <input asp-for="ResponsibleCustomerName" class="form-control" />
+                                    <span asp-validation-for="ResponsibleCustomerName" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="PhoneNumber"></label>
+                                    <input asp-for="PhoneNumber" type="tel" class="form-control" />
+                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="Email"></label>
+                                    <input asp-for="Email" type="email" class="form-control" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Tarih Bilgileri -->
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4><i class="fas fa-calendar-alt"></i> Tarih Bilgileri</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label asp-for="ReservationDate"></label>
+                                    <input asp-for="ReservationDate" type="datetime-local" class="form-control" />
+                                    <span asp-validation-for="ReservationDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Durum Bilgileri -->
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4><i class="fas fa-info-circle"></i> Durum Bilgileri</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label asp-for="Status"></label>
+                                    <select asp-for="Status" class="form-control">
+                                        @foreach (ReservationStatus status in Enum.GetValues(typeof(ReservationStatus)))
+                                        {
+                                            <option value="@status">@status.GetDisplayName()</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="Status" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="Priority"></label>
+                                    <select asp-for="Priority" class="form-control">
+                                        @foreach (Priority priority in Enum.GetValues(typeof(Priority)))
+                                        {
+                                            <option value="@priority">@priority.GetDisplayName()</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="Priority" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detaylar -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4><i class="fas fa-file-alt"></i> Rezervasyon Detayları</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label asp-for="Details"></label>
+                                    <textarea asp-for="Details" class="form-control" rows="5"></textarea>
+                                    <span asp-validation-for="Details" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Butonlar -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body text-right">
+                                <a asp-controller="Dashboard" asp-action="Index" class="btn btn-secondary">
+                                    <i class="fas fa-times"></i> İptal
+                                </a>
+                                <button class="btn btn-primary">Güncelle</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

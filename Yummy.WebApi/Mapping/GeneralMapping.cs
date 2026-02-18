@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Yummy.WebApi.Dtos;
 using Yummy.WebApi.Dtos.AboutDtos;
 using Yummy.WebApi.Dtos.CategoryDtos;
 using Yummy.WebApi.Dtos.ChefDtos;
@@ -53,6 +54,11 @@ public class GeneralMapping : Profile
         CreateMap<EmployeeTask, GetByIdEmployeeTaskDto>().ReverseMap();
         CreateMap<EmployeeTask, ResultEmployeeTaskDto>().ReverseMap();
         CreateMap<EmployeeTask, UpdateEmployeeTaskDto>().ReverseMap();
+
+        CreateMap<GroupReservation, CreateGroupReservationDto>().ReverseMap();
+        CreateMap<GroupReservation, GetByIdGroupReservationDto>().ReverseMap();
+        CreateMap<GroupReservation, ResultGroupReservationDto>().ReverseMap();
+        CreateMap<GroupReservation, UpdateGroupReservationDto>().ReverseMap();
 
         CreateMap<Message, CreateMessageDto>().ReverseMap();
         CreateMap<Message, GetByIdMessageDto>().ReverseMap();

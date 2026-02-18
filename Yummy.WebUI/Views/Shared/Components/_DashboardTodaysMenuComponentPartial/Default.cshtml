@@ -1,0 +1,377 @@
+﻿@model DailyMenuDto
+
+@{
+    var days = new[] { "Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi" };
+    var months = new[] { "Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara" };
+    var now = DateTime.Now;
+}
+
+<div class="col-md-12 col-lg-12 col-xl-12">
+    <div class="card menu-ai-card">
+        <div class="card-header menu-ai-header">
+            <div class="menu-ai-title">
+                <div class="ai-pulse-dot"></div>
+                <h4>AI Günlük Menü Önerisi</h4>
+            </div>
+
+            <div class="menu-date-compact">
+                <span class="date-day">@days[(int)now.DayOfWeek]</span>
+                <span class="date-full">@now.Day @months[now.Month - 1]</span>
+            </div>
+        </div>
+
+
+        <div class="menu-ai-badge-bar">
+            <span class="menu-ai-badge">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+                Mevsimsel
+            </span>
+            <span class="menu-ai-badge popular">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                    <polyline points="17 6 23 6 23 12"></polyline>
+                </svg>
+                Popüler
+            </span>
+            <span class="menu-ai-generated-label">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                AI tarafından oluşturuldu
+            </span>
+        </div>
+
+        <div class="card-body menu-ai-body">
+
+            @if (Model != null)
+            {
+                @if (Model.Starter != null && Model.Starter.Any())
+                {
+                    <div class="menu-section-label">🥣 Başlangıçlar</div>
+                    @foreach (var item in Model.Starter)
+                    {
+                        <div class="menu-item-card">
+                            <div class="menu-item-emoji">@item.Emoji</div>
+                            <div class="menu-item-info">
+                                <p class="menu-item-name">@item.Name</p>
+                                <p class="menu-item-desc">@item.Desc</p>
+                                <div class="menu-item-tags">
+                                    @foreach (var tag in item.Tags)
+                                    {
+                                        var tagClass = tag == "mevsimsel" ? "tag-season" : "tag-popular";
+                                        <span class="menu-item-tag @tagClass">@tag</span>
+                                    }
+                                    <span class="menu-item-tag tag-time">⏱ @item.Time</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+
+                @if (Model.Main != null && Model.Main.Any())
+                {
+                    <div class="menu-section-label mt-2">🍽️ Ana Yemekler</div>
+                    @foreach (var item in Model.Main)
+                    {
+                        <div class="menu-item-card">
+                            <div class="menu-item-emoji">@item.Emoji</div>
+                            <div class="menu-item-info">
+                                <p class="menu-item-name">@item.Name</p>
+                                <p class="menu-item-desc">@item.Desc</p>
+                                <div class="menu-item-tags">
+                                    @foreach (var tag in item.Tags)
+                                    {
+                                        var tagClass = tag == "mevsimsel" ? "tag-season" : "tag-popular";
+                                        <span class="menu-item-tag @tagClass">@tag</span>
+                                    }
+                                    <span class="menu-item-tag tag-time">⏱ @item.Time</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+
+                @if (Model.Dessert != null && Model.Dessert.Any())
+                {
+                    <div class="menu-section-label mt-2">🍰 Tatlılar</div>
+                    @foreach (var item in Model.Dessert)
+                    {
+                        <div class="menu-item-card">
+                            <div class="menu-item-emoji">@item.Emoji</div>
+                            <div class="menu-item-info">
+                                <p class="menu-item-name">@item.Name</p>
+                                <p class="menu-item-desc">@item.Desc</p>
+                                <div class="menu-item-tags">
+                                    @foreach (var tag in item.Tags)
+                                    {
+                                        var tagClass = tag == "mevsimsel" ? "tag-season" : "tag-popular";
+                                        <span class="menu-item-tag @tagClass">@tag</span>
+                                    }
+                                    <span class="menu-item-tag tag-time">⏱ @item.Time</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+            else
+            {
+                <div class="menu-empty-state">
+                    <p class="empty-title">Menü yüklenemedi</p>
+                    <p class="empty-desc">Lütfen sayfayı yenileyin</p>
+                </div>
+            }
+        </div>
+
+        <div class="menu-ai-footer">
+            <div class="footer-info">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                Öneriler günlük olarak yenilenir
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .menu-ai-card {
+        border: none;
+        border-radius: 16px;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        overflow: hidden;
+        background: #fff;
+    }
+
+    .menu-ai-header {
+        background: linear-gradient(135deg, #fff 0%, #16213e 75%, #0f3460 100%);
+        padding: 18px 20px;
+        border-bottom: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .menu-ai-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+        .menu-ai-title h4 {
+            color: #fff;
+            margin: 0;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+    .ai-pulse-dot {
+        width: 10px;
+        height: 10px;
+        background: #e94560;
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+        flex-shrink: 0;
+    }
+
+    @@keyframes pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(233, 69, 96, 0.6);
+        }
+
+        70% {
+            box-shadow: 0 0 0 8px rgba(233, 69, 96, 0);
+        }
+
+        100% {
+            box-shadow: 0 0 0 0 rgba(233, 69, 96, 0);
+        }
+    }
+
+    .menu-date-badge {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        background: rgba(255,255,255,0.12);
+        color: rgba(255,255,255,0.85);
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 11.5px;
+        font-weight: 500;
+    }
+
+    .menu-ai-badge-bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        background: #f8f9fc;
+        border-bottom: 1px solid #eef0f5;
+        flex-wrap: wrap;
+    }
+
+    .menu-ai-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 11.5px;
+        font-weight: 600;
+        background: #0f3460;
+        color: #fff;
+    }
+
+        .menu-ai-badge.popular {
+            background: #e94560;
+        }
+
+    .menu-ai-generated-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        margin-left: auto;
+        font-size: 11px;
+        color: #a0a8bc;
+    }
+
+    .menu-ai-body {
+        padding: 14px 16px;
+        max-height: 420px;
+        overflow-y: auto;
+    }
+
+    .menu-section-label {
+        font-size: 10.5px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #a0a8bc;
+        margin: 4px 0 8px;
+    }
+
+        .menu-section-label.mt-2 {
+            margin-top: 14px;
+        }
+
+    .menu-item-card {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 11px 13px;
+        background: #f8f9fc;
+        border-radius: 12px;
+        border: 1px solid #eef0f5;
+        margin-bottom: 8px;
+        transition: all 0.2s;
+    }
+
+        .menu-item-card:hover {
+            background: #fff;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+            transform: translateX(3px);
+        }
+
+    .menu-item-emoji {
+        font-size: 20px;
+        width: 36px;
+        height: 36px;
+        background: #fff;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        flex-shrink: 0;
+    }
+
+    .menu-item-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .menu-item-name {
+        font-size: 13px;
+        font-weight: 600;
+        color: #1a1a2e;
+        margin: 0 0 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .menu-item-desc {
+        font-size: 11.5px;
+        color: #8a94a6;
+        margin: 0 0 5px;
+        line-height: 1.4;
+    }
+
+    .menu-item-tags {
+        display: flex;
+        gap: 4px;
+        flex-wrap: wrap;
+    }
+
+    .menu-item-tag {
+        font-size: 10px;
+        font-weight: 600;
+        padding: 2px 7px;
+        border-radius: 10px;
+    }
+
+    .tag-season {
+        background: #e8f5e9;
+        color: #2e7d32;
+    }
+
+    .tag-popular {
+        background: #fff3e0;
+        color: #e65100;
+    }
+
+    .tag-time {
+        background: #e8eaf6;
+        color: #3949ab;
+    }
+
+    .menu-ai-footer {
+        display: flex;
+        align-items: center;
+        padding: 10px 16px;
+        border-top: 1px solid #eef0f5;
+        background: #f8f9fc;
+    }
+
+    .footer-info {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 11px;
+        color: #a0a8bc;
+    }
+
+    .menu-empty-state {
+        text-align: center;
+        padding: 40px 20px;
+    }
+
+    .empty-title {
+        font-size: 15px;
+        font-weight: 600;
+        color: #3d4457;
+        margin: 0 0 6px;
+    }
+
+    .empty-desc {
+        font-size: 12.5px;
+        color: #a0a8bc;
+        margin: 0;
+    }
+</style>
